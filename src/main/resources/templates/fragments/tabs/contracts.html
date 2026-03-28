@@ -1,0 +1,37 @@
+<div th:fragment="content" class="fade-in">
+    <div class="flex justify-between items-center mb-6 border-b pb-4">
+        <h3 class="text-lg leading-6 font-medium text-gray-900">Contracts</h3>
+        <button hx-get="/dashboard/modal/contract/0" hx-target="#modal-content" onclick="openModal()" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+            Create New
+        </button>
+    </div>
+
+    <div class="overflow-x-auto rounded-lg border border-gray-200">
+        <table class="min-w-full divide-y divide-gray-200">
+            <thead class="bg-gray-50">
+                <tr>
+                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">ID</th>
+                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
+                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                </tr>
+            </thead>
+            <tbody class="bg-white divide-y divide-gray-200">
+                <tr th:each="contract : ${contracts}" 
+                    th:attr="hx-get=@{/dashboard/modal/contract/{id}(id=${contract.id})}, hx-target='#modal-content'" 
+                    onclick="openModal()"
+                    class="hover:bg-gray-50 cursor-pointer transition-colors duration-200">
+                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900" th:text="${contract.id}"></td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500" th:text="${contract.name}"></td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800" th:if="${contract.status == 'ACTIVE'}" th:text="${contract.status}"></span>
+                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800" th:if="${contract.status != 'ACTIVE'}" th:text="${contract.status}"></span>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        
+        <div th:if="${#lists.isEmpty(contracts)}" class="text-center py-10 text-gray-500 text-sm">
+            No contracts found.
+        </div>
+    </div>
+</div>

@@ -1,0 +1,186 @@
+<div th:fragment="modal" class="bg-white px-4 pb-4 pt-5 sm:p-6 sm:pb-4">
+    <div class="sm:flex sm:items-start" style="width: 100%;">
+        <div class="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left w-full">
+            <h3 class="text-lg font-medium leading-6 text-gray-900" id="modal-title" th:text="${entity.id != null ? 'Legal Entity details (Read-Only)' : 'Create Legal Entity'}"></h3>
+            
+            <div class="mt-4 border-t border-gray-200 pt-4 w-full">
+                <!-- VIEW MODE -->
+                <div id="view-mode" th:classappend="${entity.id == null ? 'hidden' : ''}">
+                    <dl class="grid grid-cols-1 gap-x-4 gap-y-6 sm:grid-cols-2">
+                        <div class="sm:col-span-1">
+                            <dt class="text-sm font-medium text-gray-500">Name</dt>
+                            <dd class="mt-1 text-sm text-gray-900" th:text="${entity.name}"></dd>
+                        </div>
+                        <div class="sm:col-span-1">
+                            <dt class="text-sm font-medium text-gray-500">Country of Registration</dt>
+                            <dd class="mt-1 text-sm text-gray-900" th:text="${entity.country}"></dd>
+                        </div>
+                        <div class="sm:col-span-1 border-t sm:border-t-0 sm:col-span-2 pt-2 sm:pt-0">
+                            <dt class="text-sm font-medium text-gray-500">Registration Number</dt>
+                            <dd class="mt-1 text-sm text-gray-900" th:text="${entity.registrationNumber}"></dd>
+                        </div>
+                        
+                        <!-- Address section -->
+                        <div class="sm:col-span-2 mt-4 border-t pt-2">
+                            <h4 class="text-sm font-semibold text-gray-500 mb-2">Registered Address</h4>
+                        </div>
+                        <div class="sm:col-span-1">
+                            <dt class="text-sm font-medium text-gray-500">Street Number & Name</dt>
+                            <dd class="mt-1 text-sm text-gray-900" th:text="${(entity.address?.streetNumber ?: '') + ' ' + (entity.address?.streetName ?: '')}"></dd>
+                        </div>
+                        <div class="sm:col-span-1">
+                            <dt class="text-sm font-medium text-gray-500">Building / Complement</dt>
+                            <dd class="mt-1 text-sm text-gray-900" th:text="${(entity.address?.building ?: '') + ' ' + (entity.address?.addressComplement ?: '')}"></dd>
+                        </div>
+                        <div class="sm:col-span-1">
+                            <dt class="text-sm font-medium text-gray-500">Zip / City</dt>
+                            <dd class="mt-1 text-sm text-gray-900" th:text="${(entity.address?.zipCode ?: '') + ' ' + (entity.address?.city ?: '')}"></dd>
+                        </div>
+                        <div class="sm:col-span-1">
+                            <dt class="text-sm font-medium text-gray-500">Country</dt>
+                            <dd class="mt-1 text-sm text-gray-900" th:text="${entity.address?.country}"></dd>
+                        </div>
+                    </dl>
+                    
+                    <div class="mt-5 sm:mt-6 sm:flex sm:flex-row-reverse border-t pt-4">
+                        <button type="button" onclick="closeModal()" class="mt-3 inline-flex w-full justify-center rounded-md border border-gray-300 bg-white px-4 py-2 text-base font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm">
+                            Close
+                        </button>
+                        <button type="button" onclick="toggleEditMode()" class="inline-flex w-full justify-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:w-auto sm:text-sm">
+                            Edit
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- EDIT MODE -->
+                <div id="edit-mode" th:classappend="${entity.id != null ? 'hidden' : ''}">
+                    <form hx-post="/dashboard/modal/legal-entity" hx-target="#tab-content" id="le-form">
+                        <input type="hidden" name="id" th:value="${entity.id}"/>
+                        
+                        <div class="grid grid-cols-1 gap-y-4 sm:grid-cols-2 gap-x-4">
+                            <div class="sm:col-span-2">
+                                <label class="block text-sm font-medium text-gray-700">Company Name</label>
+                                <input type="text" name="name" th:value="${entity.name}" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm p-2 border">
+                            </div>
+                            <div class="relative">
+                                <label class="block text-sm font-medium text-gray-700">Country of Registration</label>
+                                <input type="text" id="le-country-search" autocomplete="off" placeholder="Type to search..." th:value="${entity.country}" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm p-2 border">
+                                <input type="hidden" id="le-country" name="country" th:value="${entity.country}">
+                                <ul id="le-country-list" class="absolute z-10 w-full bg-white border border-gray-300 rounded-md shadow-lg max-h-40 overflow-auto hidden mt-1"></ul>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700">Registration Number</label>
+                                <input type="text" name="registrationNumber" th:value="${entity.registrationNumber}" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm p-2 border">
+                            </div>
+                            
+                            <!-- Address -->
+                            <div class="sm:col-span-2 border-t mt-2 pt-2"><h4 class="text-sm font-semibold text-gray-500">Registered Address</h4></div>
+                            
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700">Street Number</label>
+                                <input type="text" name="address.streetNumber" th:value="${entity.address?.streetNumber}" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm p-2 border">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700">Street Name</label>
+                                <input type="text" name="address.streetName" th:value="${entity.address?.streetName}" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm p-2 border">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700">Building</label>
+                                <input type="text" name="address.building" th:value="${entity.address?.building}" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm p-2 border">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700">Complement</label>
+                                <input type="text" name="address.addressComplement" th:value="${entity.address?.addressComplement}" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm p-2 border">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700">Zip Code</label>
+                                <input type="text" name="address.zipCode" th:value="${entity.address?.zipCode}" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm p-2 border">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700">City</label>
+                                <input type="text" name="address.city" th:value="${entity.address?.city}" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm p-2 border">
+                            </div>
+                            <div class="sm:col-span-2">
+                                <label class="block text-sm font-medium text-gray-700">Country</label>
+                                <input type="text" name="address.country" th:value="${entity.address?.country}" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm p-2 border">
+                            </div>
+                        </div>
+
+                        <div class="mt-5 sm:mt-6 sm:flex sm:flex-row-reverse border-t pt-4">
+                            <button type="submit" class="inline-flex w-full justify-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:ml-3 sm:w-auto sm:text-sm">
+                                Save
+                            </button>
+                            <button type="button" onclick="closeModal()" class="mt-3 inline-flex w-full justify-center rounded-md border border-gray-300 bg-white px-4 py-2 text-base font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:mt-0 sm:w-auto sm:text-sm">
+                                Cancel
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        (function() {
+            const countriesList = ["Afghanistan","Albania","Algeria","Andorra","Angola","Argentina","Armenia","Australia","Austria","Bahamas","Bahrain","Bangladesh","Barbados","Belarus","Belgium","Belize","Benin","Bhutan","Bolivia","Bosnia","Botswana","Brazil","Bulgaria","Burkina Faso","Burundi","Cambodia","Cameroon","Canada","Chad","Chile","China","Colombia","Comoros","Congo","Costa Rica","Croatia","Cuba","Cyprus","Czech Republic","Denmark","Djibouti","Dominica","Dominican Republic","Ecuador","Egypt","El Salvador","Estonia","Eswatini","Ethiopia","Fiji","Finland","France","Gabon","Gambia","Georgia","Germany","Ghana","Greece","Guatemala","Guinea","Haiti","Honduras","Hungary","Iceland","India","Indonesia","Iran","Iraq","Ireland","Israel","Italy","Jamaica","Japan","Jordan","Kazakhstan","Kenya","Kuwait","Latvia","Lebanon","Libya","Lithuania","Luxembourg","Madagascar","Malaysia","Maldives","Mali","Malta","Mexico","Monaco","Mongolia","Morocco","Myanmar","Namibia","Nepal","Netherlands","New Zealand","Nicaragua","Niger","Nigeria","Norway","Oman","Pakistan","Panama","Paraguay","Peru","Philippines","Poland","Portugal","Qatar","Romania","Russia","Rwanda","Saudi Arabia","Senegal","Serbia","Singapore","Slovakia","Slovenia","Somalia","South Africa","South Korea","Spain","Sri Lanka","Sudan","Sweden","Switzerland","Syria","Taiwan","Tajikistan","Tanzania","Thailand","Togo","Tunisia","Turkey","Turkmenistan","Uganda","Ukraine","United Arab Emirates","United Kingdom","United States","Uruguay","Uzbekistan","Vatican City","Venezuela","Vietnam","Yemen","Zambia","Zimbabwe"];
+            
+            const searchInput = document.getElementById('le-country-search');
+            const hiddenInput = document.getElementById('le-country');
+            const listEl = document.getElementById('le-country-list');
+            
+            function renderList(filterTxt) {
+                listEl.innerHTML = '';
+                const filtered = countriesList.filter(c => c.toLowerCase().includes(filterTxt.toLowerCase()));
+                if(filtered.length === 0) {
+                    listEl.innerHTML = '<li class="p-2 text-gray-500 text-sm">No matches</li>';
+                } else {
+                    filtered.forEach(c => {
+                        const li = document.createElement('li');
+                        li.className = 'p-2 hover:bg-indigo-50 cursor-pointer text-sm font-medium text-gray-700';
+                        li.textContent = c;
+                        li.onclick = () => {
+                            searchInput.value = c;
+                            hiddenInput.value = c;
+                            listEl.classList.add('hidden');
+                        };
+                        listEl.appendChild(li);
+                    });
+                }
+            }
+
+            if (searchInput) {
+                searchInput.addEventListener('focus', () => {
+                    listEl.classList.remove('hidden');
+                    renderList(searchInput.value);
+                });
+                
+                searchInput.addEventListener('input', (e) => {
+                    hiddenInput.value = ''; // clear hidden value if typing
+                    listEl.classList.remove('hidden');
+                    renderList(e.target.value);
+                });
+
+                document.addEventListener('click', (e) => {
+                    if(!searchInput.contains(e.target) && !listEl.contains(e.target)) {
+                        listEl.classList.add('hidden');
+                        // validate if strictly in array
+                        if(!countriesList.includes(searchInput.value)) {
+                            searchInput.value = '';
+                            hiddenInput.value = '';
+                        } else {
+                            hiddenInput.value = searchInput.value;
+                        }
+                    }
+                });
+            }
+
+            // Close modal gently
+            const form = document.getElementById('le-form');
+            if(form) {
+                form.addEventListener('submit', () => closeModal());
+            }
+
+        })();
+    </script>
+</div>

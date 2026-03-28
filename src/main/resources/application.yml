@@ -1,0 +1,18 @@
+spring:
+  application:
+    name: kyc-backoffice
+  datasource:
+    url: jdbc:postgresql://localhost:5432/kyc_db
+    username: kycuser
+    password: kycpassword
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: true
+    show-sql: true
+server:
+  port: 8080

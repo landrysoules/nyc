@@ -1,0 +1,30 @@
+<div th:fragment="otp-content" id="auth-content">
+    <div class="text-center mb-6">
+        <div class="inline-flex items-center justify-center w-12 h-12 rounded-full bg-green-100 text-green-500 mb-4 shadow-sm">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+        </div>
+        <h3 class="text-lg font-medium text-gray-900">Step 2: Verification</h3>
+        <p class="mt-1 text-sm text-gray-500">Please enter the 6-digit code from your authenticator app for <span th:text="${username}" class="font-semibold text-gray-700"></span>.</p>
+    </div>
+
+    <form class="space-y-6" th:action="@{/auth/verify-otp}" method="POST" hx-post="/auth/verify-otp" hx-target="#auth-container" hx-swap="innerHTML">
+        <div th:if="${error}" class="bg-red-50 text-red-500 p-3 rounded-lg text-sm font-medium border border-red-100 flex items-center mb-4">
+            <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"></path></svg>
+            <span th:text="${error}"></span>
+        </div>
+
+        <div>
+            <label for="otpCode" class="sr-only">OTP Code</label>
+            <input id="otpCode" name="otpCode" type="text" autocomplete="one-time-code" required maxlength="6" pattern="\d{6}" autofocus
+                   class="appearance-none relative block w-full px-4 py-4 border border-gray-300 placeholder-gray-400 text-gray-900 rounded-lg focus:outline-none focus:ring-primary focus:border-primary focus:z-10 text-center text-2xl tracking-[0.5em] font-mono shadow-inner transition-all"
+                   placeholder="------">
+        </div>
+
+        <div>
+            <button type="submit"
+                    class="group relative w-full flex justify-center py-3 px-4 border border-transparent text-sm font-medium rounded-lg text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors shadow-md my-2">
+                Verify OTP & Login
+            </button>
+        </div>
+    </form>
+</div>
