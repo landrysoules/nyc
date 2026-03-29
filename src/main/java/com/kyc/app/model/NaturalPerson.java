@@ -32,8 +32,8 @@ public class NaturalPerson {
     @NotNull(message = "Date of Birth is mandatory")
     private LocalDate dateOfBirth;
 
-    @Embedded
-    private Address address;
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private Address address = new Address();
 
     public NaturalPerson(String firstName, String lastName, String nationality, LocalDate dateOfBirth, Address address) {
         this.firstName = firstName;

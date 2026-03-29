@@ -26,11 +26,8 @@ public class LegalEntity {
     @NotBlank(message = "Registration number is mandatory")
     private String registrationNumber;
 
-    @Embedded
-    @AttributeOverrides({
-        @AttributeOverride(name = "country", column = @Column(name = "address_country"))
-    })
-    private Address address;
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private Address address = new Address();
 
     public LegalEntity(String name, String country, String registrationNumber, Address address) {
         this.name = name;
