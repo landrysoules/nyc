@@ -60,18 +60,22 @@
                 
                 <!-- EDIT MODE -->
                 <div id="edit-mode" x-cloak x-show="isEditMode">
-                    <form hx-post="/dashboard/details/legal-entity" hx-target="#tab-content" id="le-form">
+                    <form th:fragment="edit-form" hx-post="/dashboard/details/legal-entity" hx-target="#tab-content" id="le-form">
+                        <!-- Trigger for OOB validation -->
+                        <div hx-post="/dashboard/validate/legal-entity" hx-trigger="keyup delay:500ms from:input, change from:select, customValidation from:body" hx-include="#le-form" hx-swap="none"></div>
                         <input type="hidden" name="id" th:value="${entity.id}"/>
                         
                         <div class="grid grid-cols-1 gap-y-4 sm:grid-cols-2 gap-x-4">
                             <div class="sm:col-span-2">
-                                <label class="block text-sm font-medium text-gray-700">Company Name</label>
-                                <input type="text" name="name" th:value="${entity.name}" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm p-2 border">
+                                <label class="block text-sm font-medium text-gray-700">Company Name <span class="text-red-500">*</span></label>
+                                <input type="text" name="name" th:value="${entity.name}" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm p-2 border">
+                                <span id="err-le-name" class="text-sm text-red-600 mt-1 block" th:text="${#fields.hasErrors('entity.name')} ? ${#fields.errors('entity.name')[0]} : ''"></span>
                             </div>
                             <div class="relative" @click.outside="handleClickOutside()">
-                                <label class="block text-sm font-medium text-gray-700">Country of Registration</label>
+                                <label class="block text-sm font-medium text-gray-700">Country of Registration <span class="text-red-500">*</span></label>
                                 <input type="text" autocomplete="off" placeholder="Type to search..." x-model.fill="searchQuery" @focus="showCountryList = true" th:value="${entity.country}" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm p-2 border">
                                 <input type="hidden" name="country" x-model.fill="country" th:value="${entity.country}">
+                                <span id="err-le-country" class="text-sm text-red-600 mt-1 block" th:text="${#fields.hasErrors('entity.country')} ? ${#fields.errors('entity.country')[0]} : ''"></span>
                                 <ul x-show="showCountryList" x-cloak class="absolute z-10 w-full bg-white border border-gray-300 rounded-md shadow-lg max-h-40 overflow-auto mt-1">
                                     <template x-for="c in filteredCountries" :key="c">
                                         <li class="p-2 hover:bg-indigo-50 cursor-pointer text-sm font-medium text-gray-700" @click="selectCountry(c)" x-text="c"></li>
@@ -80,8 +84,9 @@
                                 </ul>
                             </div>
                             <div>
-                                <label class="block text-sm font-medium text-gray-700">Registration Number</label>
-                                <input type="text" name="registrationNumber" th:value="${entity.registrationNumber}" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm p-2 border">
+                                <label class="block text-sm font-medium text-gray-700">Registration Number <span class="text-red-500">*</span></label>
+                                <input type="text" name="registrationNumber" th:value="${entity.registrationNumber}" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm p-2 border">
+                                <span id="err-le-registrationNumber" class="text-sm text-red-600 mt-1 block" th:text="${#fields.hasErrors('entity.registrationNumber')} ? ${#fields.errors('entity.registrationNumber')[0]} : ''"></span>
                             </div>
                             
                             <!-- Address -->
@@ -118,7 +123,7 @@
                         </div>
 
                         <div class="mt-5 sm:mt-6 sm:flex sm:flex-row-reverse border-t pt-4">
-                            <button type="submit" class="inline-flex w-full justify-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:ml-3 sm:w-auto sm:text-sm">
+                            <button id="le-submit-btn" type="submit" th:disabled="${isValid != null ? !isValid : #fields.hasErrors('entity.*')}" class="inline-flex w-full justify-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:ml-3 sm:w-auto sm:text-sm disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors">
                                 Save
                             </button>
                             <button type="button" hx-get="/dashboard/tab/legal-entities" hx-target="#tab-content" class="mt-3 inline-flex w-full justify-center rounded-md border border-gray-300 bg-white px-4 py-2 text-base font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:mt-0 sm:w-auto sm:text-sm">

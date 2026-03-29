@@ -36,6 +36,9 @@ export default function naturalPersonForm(isEditMode) {
             this.searchQuery = country;
             this.nationality = country;
             this.showNationalityList = false;
+            this.$nextTick(() => {
+                 document.body.dispatchEvent(new Event('customValidation'));
+            });
         },
 
         handleClickOutside() {
@@ -47,19 +50,11 @@ export default function naturalPersonForm(isEditMode) {
             } else {
                 this.nationality = this.searchQuery;
             }
+            this.$nextTick(() => {
+                 document.body.dispatchEvent(new Event('customValidation'));
+            });
         },
 
-        get isFirstNameValid() { return this.firstName.trim() !== ''; },
-        get isLastNameValid() { return this.lastName.trim() !== ''; },
-        get isNationalityValid() { return this.nationality.trim() !== ''; },
-        get isDobValid() { return this.dateOfBirth.trim() !== ''; },
-
-        get isFormValid() {
-            return this.isFirstNameValid &&
-                   this.isLastNameValid &&
-                   this.isNationalityValid &&
-                   this.isDobValid;
-        },
 
         toggleEditMode() {
             this.isEditMode = true;

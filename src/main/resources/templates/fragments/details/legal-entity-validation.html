@@ -1,0 +1,16 @@
+<div th:fragment="validation" style="display: none;">
+    <span id="err-le-name" hx-swap-oob="true" class="text-sm text-red-600 mt-1 block"
+          th:text="${#fields.hasErrors('entity.name')} ? ${#fields.errors('entity.name')[0]} : ''"></span>
+
+    <span id="err-le-country" hx-swap-oob="true" class="text-sm text-red-600 mt-1 block"
+          th:text="${#fields.hasErrors('entity.country')} ? ${#fields.errors('entity.country')[0]} : ''"></span>
+
+    <span id="err-le-registrationNumber" hx-swap-oob="true" class="text-sm text-red-600 mt-1 block"
+          th:text="${#fields.hasErrors('entity.registrationNumber')} ? ${#fields.errors('entity.registrationNumber')[0]} : ''"></span>
+
+    <button id="le-submit-btn" hx-swap-oob="true" type="submit"
+            th:disabled="${#fields.hasErrors('entity.*')}"
+            class="inline-flex w-full justify-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:ml-3 sm:w-auto sm:text-sm disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors">
+        Save
+    </button>
+</div>

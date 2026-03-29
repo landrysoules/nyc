@@ -1,0 +1,13 @@
+<div th:fragment="validation" style="display: none;">
+    <span id="err-contract-name" hx-swap-oob="true" class="text-sm text-red-600 mt-1 block"
+          th:text="${#fields.hasErrors('contract.name')} ? ${#fields.errors('contract.name')[0]} : ''"></span>
+
+    <span id="err-contract-status" hx-swap-oob="true" class="text-sm text-red-600 mt-1 block"
+          th:text="${#fields.hasErrors('contract.status')} ? ${#fields.errors('contract.status')[0]} : ''"></span>
+
+    <button id="contract-submit-btn" hx-swap-oob="true" type="submit"
+            th:disabled="${#fields.hasErrors('contract.*')}"
+            class="inline-flex w-full justify-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:ml-3 sm:w-auto sm:text-sm disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors">
+        Save
+    </button>
+</div>

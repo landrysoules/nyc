@@ -31,6 +31,9 @@ export default function legalEntityForm(isEditMode) {
             this.searchQuery = country;
             this.country = country;
             this.showCountryList = false;
+            this.$nextTick(() => {
+                 document.body.dispatchEvent(new Event('customValidation'));
+            });
         },
 
         handleClickOutside() {
@@ -41,6 +44,9 @@ export default function legalEntityForm(isEditMode) {
             } else {
                 this.country = this.searchQuery;
             }
+            this.$nextTick(() => {
+                 document.body.dispatchEvent(new Event('customValidation'));
+            });
         },
 
         toggleEditMode() {

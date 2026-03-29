@@ -1,6 +1,8 @@
 package com.kyc.app.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -18,9 +20,16 @@ public class NaturalPerson {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotBlank(message = "First name is mandatory")
     private String firstName;
+    
+    @NotBlank(message = "Last name is mandatory")
     private String lastName;
+    
+    @NotBlank(message = "Nationality is mandatory")
     private String nationality;
+    
+    @NotNull(message = "Date of Birth is mandatory")
     private LocalDate dateOfBirth;
 
     @Embedded

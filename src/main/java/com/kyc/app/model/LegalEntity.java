@@ -1,6 +1,7 @@
 package com.kyc.app.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -16,8 +17,13 @@ public class LegalEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotBlank(message = "Name is mandatory")
     private String name;
+    
+    @NotBlank(message = "Country is mandatory")
     private String country;
+    
+    @NotBlank(message = "Registration number is mandatory")
     private String registrationNumber;
 
     @Embedded
