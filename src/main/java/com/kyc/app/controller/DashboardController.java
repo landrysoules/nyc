@@ -55,51 +55,51 @@ public class DashboardController {
         return "fragments/tabs/contracts :: content";
     }
 
-    // --- Modals (Read Only & Forms) ---
+    // --- Details Panels (Read Only & Forms) ---
     
-    @GetMapping("/dashboard/modal/natural-person/{id}")
-    public String modalNaturalPerson(@PathVariable("id") Long id, Model model) {
+    @GetMapping("/dashboard/details/natural-person/{id}")
+    public String detailsNaturalPerson(@PathVariable("id") Long id, Model model) {
         if(id > 0) {
             model.addAttribute("person", naturalPersonService.findById(id).orElse(new NaturalPerson()));
         } else {
             model.addAttribute("person", new NaturalPerson());
         }
-        return "fragments/modals/natural-person-modal :: modal";
+        return "fragments/details/natural-person-details :: panel";
     }
 
-    @PostMapping("/dashboard/modal/natural-person")
+    @PostMapping("/dashboard/details/natural-person")
     public String saveNaturalPerson(@ModelAttribute NaturalPerson person, Model model) {
         naturalPersonService.save(person);
         return tabNaturalPersons(model); // refresh the list
     }
     
-    @GetMapping("/dashboard/modal/legal-entity/{id}")
-    public String modalLegalEntity(@PathVariable("id") Long id, Model model) {
+    @GetMapping("/dashboard/details/legal-entity/{id}")
+    public String detailsLegalEntity(@PathVariable("id") Long id, Model model) {
         if(id > 0) {
             model.addAttribute("entity", legalEntityService.findById(id).orElse(new LegalEntity()));
         } else {
             model.addAttribute("entity", new LegalEntity());
         }
-        return "fragments/modals/legal-entity-modal :: modal";
+        return "fragments/details/legal-entity-details :: panel";
     }
 
-    @PostMapping("/dashboard/modal/legal-entity")
+    @PostMapping("/dashboard/details/legal-entity")
     public String saveLegalEntity(@ModelAttribute LegalEntity entity, Model model) {
         legalEntityService.save(entity);
         return tabLegalEntities(model); // refresh the list
     }
     
-    @GetMapping("/dashboard/modal/contract/{id}")
-    public String modalContract(@PathVariable("id") Long id, Model model) {
+    @GetMapping("/dashboard/details/contract/{id}")
+    public String detailsContract(@PathVariable("id") Long id, Model model) {
         if(id > 0) {
             model.addAttribute("contract", contractService.findById(id).orElse(new Contract()));
         } else {
             model.addAttribute("contract", new Contract());
         }
-        return "fragments/modals/contract-modal :: modal";
+        return "fragments/details/contract-details :: panel";
     }
 
-    @PostMapping("/dashboard/modal/contract")
+    @PostMapping("/dashboard/details/contract")
     public String saveContract(@ModelAttribute Contract contract, Model model) {
         contractService.save(contract);
         return tabContracts(model); // refresh the list

@@ -4,7 +4,7 @@
     <title>Dashboard</title>
 </head>
 <body>
-    <div th:fragment="content" class="w-full max-w-6xl max-h-full">
+    <div th:fragment="content" x-data="dashboard()" class="w-full max-w-6xl max-h-full">
         <!-- Header -->
         <div class="bg-white rounded-2xl shadow-xl overflow-hidden mb-6 border border-gray-100 flex items-center justify-between p-6">
              <div>
@@ -26,20 +26,23 @@
             <div class="border-b border-gray-200">
                 <nav class="-mb-px flex space-x-8 px-8" aria-label="Tabs" id="tabs-container">
                     <button hx-get="/dashboard/tab/natural-persons" hx-target="#tab-content" hx-trigger="click, load"
-                            onclick="setActiveTab(this)"
-                            class="tab-btn whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm text-indigo-600 border-indigo-500 active-tab">
+                            @click="setActiveTab('natural-persons')"
+                            :class="isTabActive('natural-persons') ? 'text-indigo-600 border-indigo-500' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'"
+                            class="whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm">
                         Natural Persons
                     </button>
                     
                     <button hx-get="/dashboard/tab/legal-entities" hx-target="#tab-content" 
-                            onclick="setActiveTab(this)"
-                            class="tab-btn whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300">
+                            @click="setActiveTab('legal-entities')"
+                            :class="isTabActive('legal-entities') ? 'text-indigo-600 border-indigo-500' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'"
+                            class="whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm">
                         Legal Entities
                     </button>
 
                     <button hx-get="/dashboard/tab/contracts" hx-target="#tab-content" 
-                            onclick="setActiveTab(this)"
-                            class="tab-btn whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300">
+                            @click="setActiveTab('contracts')"
+                            :class="isTabActive('contracts') ? 'text-indigo-600 border-indigo-500' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'"
+                            class="whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm">
                         Contracts
                     </button>
                 </nav>
@@ -54,43 +57,8 @@
             </div>
         </div>
 
-        <!-- Modal Container (Hidden by default, used by HTMX) -->
-        <div id="modal-container" class="relative z-10 hidden" aria-labelledby="modal-title" role="dialog" aria-modal="true">
-            <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"></div>
-            <div class="fixed inset-0 z-10 w-screen overflow-y-auto">
-                <div class="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
-                    <div id="modal-content" class="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-2xl">
-                        <!-- Content loaded by HTMX -->
-                    </div>
-                </div>
-            </div>
-        </div>
 
-        <!-- Script to handle active tab styling and modal closing -->
-        <script>
-            function setActiveTab(clickedBtn) {
-                document.querySelectorAll('.tab-btn').forEach(btn => {
-                    btn.classList.remove('text-indigo-600', 'border-indigo-500', 'active-tab');
-                    btn.classList.add('border-transparent', 'text-gray-500', 'hover:text-gray-700', 'hover:border-gray-300');
-                });
-                clickedBtn.classList.remove('border-transparent', 'text-gray-500', 'hover:text-gray-700', 'hover:border-gray-300');
-                clickedBtn.classList.add('text-indigo-600', 'border-indigo-500', 'active-tab');
-            }
 
-            function closeModal() {
-                document.getElementById('modal-container').classList.add('hidden');
-            }
-            
-            function openModal() {
-                document.getElementById('modal-container').classList.remove('hidden');
-            }
-
-            // Toggle edit mode in modal
-            function toggleEditMode() {
-                document.getElementById('view-mode').classList.add('hidden');
-                document.getElementById('edit-mode').classList.remove('hidden');
-            }
-        </script>
     </div>
 </body>
 </html>

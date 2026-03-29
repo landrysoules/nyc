@@ -1,11 +1,17 @@
-<div th:fragment="modal" class="bg-white px-4 pb-4 pt-5 sm:p-6 sm:pb-4">
-    <div class="sm:flex sm:items-start" style="width: 100%;">
-        <div class="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left w-full">
-            <h3 class="text-lg font-medium leading-6 text-gray-900" id="modal-title" th:text="${contract.id != null ? 'Contract details (Read-Only)' : 'Create Contract'}"></h3>
-            
-            <div class="mt-4 border-t border-gray-200 pt-4 w-full">
+<div th:fragment="panel" class="bg-white fade-in" th:attr="x-data='contractForm(' + (${contract.id == null}) + ')'">
+    <div class="flex items-center justify-between mb-6 border-b pb-4">
+        <div class="flex items-center space-x-4">
+            <button hx-get="/dashboard/tab/contracts" hx-target="#tab-content" class="text-gray-400 hover:text-indigo-600 transition-colors" title="Back to list">
+                <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                </svg>
+            </button>
+            <h3 class="text-xl font-medium leading-6 text-gray-900" th:text="${contract.id != null ? 'Contract Details' : 'Create Contract'}"></h3>
+        </div>
+    </div>
+    <div class="w-full">
                 <!-- VIEW MODE -->
-                <div id="view-mode" th:classappend="${contract.id == null ? 'hidden' : ''}">
+                <div id="view-mode" x-show="!isEditMode">
                     <dl class="grid grid-cols-1 gap-x-4 gap-y-6 sm:grid-cols-2">
                         <div class="sm:col-span-1">
                             <dt class="text-sm font-medium text-gray-500">Contract Name</dt>
@@ -18,19 +24,19 @@
                     </dl>
                     
                     <div class="mt-5 sm:mt-6 sm:flex sm:flex-row-reverse border-t pt-4">
-                        <button type="button" onclick="closeModal()" class="mt-3 inline-flex w-full justify-center rounded-md border border-gray-300 bg-white px-4 py-2 text-base font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm">
-                            Close
+                        <button type="button" hx-get="/dashboard/tab/contracts" hx-target="#tab-content" class="mt-3 inline-flex w-full justify-center rounded-md border border-gray-300 bg-white px-4 py-2 text-base font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm">
+                            Back
                         </button>
-                        <button type="button" onclick="toggleEditMode()" class="inline-flex w-full justify-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:w-auto sm:text-sm">
+                        <button type="button" @click="toggleEditMode()" class="inline-flex w-full justify-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:w-auto sm:text-sm">
                             Edit
                         </button>
                     </div>
                 </div>
                 
                 <!-- EDIT MODE -->
-                <div id="edit-mode" th:classappend="${contract.id != null ? 'hidden' : ''}">
+                <div id="edit-mode" x-cloak x-show="isEditMode">
                     <!-- Replace tab content and close modal -->
-                    <form hx-post="/dashboard/modal/contract" hx-target="#tab-content" onsubmit="closeModal()">
+                    <form hx-post="/dashboard/details/contract" hx-target="#tab-content">
                         <input type="hidden" name="id" th:value="${contract.id}"/>
                         
                         <div class="grid grid-cols-1 gap-y-4 sm:grid-cols-2 gap-x-4">
@@ -52,14 +58,11 @@
                             <button type="submit" class="inline-flex w-full justify-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:ml-3 sm:w-auto sm:text-sm">
                                 Save
                             </button>
-                            <button type="button" onclick="closeModal()" class="mt-3 inline-flex w-full justify-center rounded-md border border-gray-300 bg-white px-4 py-2 text-base font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:mt-0 sm:w-auto sm:text-sm">
+                            <button type="button" hx-get="/dashboard/tab/contracts" hx-target="#tab-content" class="mt-3 inline-flex w-full justify-center rounded-md border border-gray-300 bg-white px-4 py-2 text-base font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:mt-0 sm:w-auto sm:text-sm">
                                 Cancel
                             </button>
                         </div>
                     </form>
                 </div>
-
-            </div>
-        </div>
     </div>
 </div>
