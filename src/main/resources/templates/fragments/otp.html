@@ -24,9 +24,9 @@
         <div x-data="{
                 otp: ['', '', '', '', '', ''],
                 init() {
-                    this.$nextTick(() => { this.$refs.otp0.focus() });
+                    this.$nextTick(() => this.$refs.otp0.focus());
                 },
-                focusNext(index) {
+                handleInput(index) {
                     if (this.otp[index] && index < 5) {
                         this.$refs['otp' + (index + 1)].focus();
                     }
@@ -41,15 +41,14 @@
                 }
             }" class="flex flex-col items-center w-full">
             <input type="hidden" name="otpCode" :value="combined" required pattern="\d{6}" />
-            
+
             <div class="flex space-x-3 justify-center">
-                <template x-for="(digit, index) in otp" :key="index">
-                    <input type="text" maxlength="1" x-model="otp[index]"
-                           :x-ref="'otp' + index"
-                           @input="focusNext(index)"
-                           @keydown="handleBackspace($event, index)"
-                           class="w-12 h-12 border border-gray-300 rounded-lg text-center text-xl font-bold text-gray-800 bg-white focus:outline-none focus:border-ihub-teal focus:ring-1 focus:ring-ihub-teal transition-colors" />
-                </template>
+                <input type="text" maxlength="1" x-ref="otp0" x-model="otp[0]" @input="handleInput(0)" @keydown="handleBackspace($event, 0)" inputmode="numeric" class="w-12 h-12 border border-gray-300 rounded-lg text-center text-xl font-bold text-gray-800 bg-white focus:outline-none focus:border-ihub-teal focus:ring-1 focus:ring-ihub-teal transition-colors" />
+                <input type="text" maxlength="1" x-ref="otp1" x-model="otp[1]" @input="handleInput(1)" @keydown="handleBackspace($event, 1)" inputmode="numeric" class="w-12 h-12 border border-gray-300 rounded-lg text-center text-xl font-bold text-gray-800 bg-white focus:outline-none focus:border-ihub-teal focus:ring-1 focus:ring-ihub-teal transition-colors" />
+                <input type="text" maxlength="1" x-ref="otp2" x-model="otp[2]" @input="handleInput(2)" @keydown="handleBackspace($event, 2)" inputmode="numeric" class="w-12 h-12 border border-gray-300 rounded-lg text-center text-xl font-bold text-gray-800 bg-white focus:outline-none focus:border-ihub-teal focus:ring-1 focus:ring-ihub-teal transition-colors" />
+                <input type="text" maxlength="1" x-ref="otp3" x-model="otp[3]" @input="handleInput(3)" @keydown="handleBackspace($event, 3)" inputmode="numeric" class="w-12 h-12 border border-gray-300 rounded-lg text-center text-xl font-bold text-gray-800 bg-white focus:outline-none focus:border-ihub-teal focus:ring-1 focus:ring-ihub-teal transition-colors" />
+                <input type="text" maxlength="1" x-ref="otp4" x-model="otp[4]" @input="handleInput(4)" @keydown="handleBackspace($event, 4)" inputmode="numeric" class="w-12 h-12 border border-gray-300 rounded-lg text-center text-xl font-bold text-gray-800 bg-white focus:outline-none focus:border-ihub-teal focus:ring-1 focus:ring-ihub-teal transition-colors" />
+                <input type="text" maxlength="1" x-ref="otp5" x-model="otp[5]" @input="handleInput(5)" @keydown="handleBackspace($event, 5)" inputmode="numeric" class="w-12 h-12 border border-gray-300 rounded-lg text-center text-xl font-bold text-gray-800 bg-white focus:outline-none focus:border-ihub-teal focus:ring-1 focus:ring-ihub-teal transition-colors" />
             </div>
         </div>
 

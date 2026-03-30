@@ -58,14 +58,51 @@
     <!-- Main Content Area -->
     <div class="w-full bg-white shadow-sm border border-gray-100 p-8 min-h-[500px]">
         <div id="view-mode" x-show="!isEditMode">
-            <div class="flex justify-end mb-4">
+            <div class="flex justify-end mb-6">
                 <button type="button" @click="toggleEditMode()" class="px-6 py-2 rounded-full border text-ihub-teal border-ihub-teal font-bold text-xs uppercase hover:bg-cyan-50 transition-colors">
                     Edit Data
                 </button>
             </div>
+
+            <h3 class="text-xl font-bold text-gray-700 mb-8 mt-2 border-b border-ihub-tealLight pb-4">Corporate data</h3>
+            <div class="grid grid-cols-3 gap-x-8 gap-y-8 mb-12">
+                <div class="col-span-3">
+                    <span class="text-[10px] text-gray-400 font-bold uppercase tracking-widest block mb-1">Company Name</span>
+                    <span class="text-sm font-bold text-gray-800 uppercase" th:text="${entity.name} ?: '---'">---</span>
+                </div>
+                <div>
+                    <span class="text-[10px] text-gray-400 font-bold uppercase tracking-widest block mb-1">Registration Number</span>
+                    <span class="text-sm font-bold text-gray-800" th:text="${entity.registrationNumber} ?: '---'">---</span>
+                </div>
+                <div>
+                    <span class="text-[10px] text-gray-400 font-bold uppercase tracking-widest block mb-1">Country of Registration</span>
+                    <span class="text-sm font-bold text-gray-800" th:text="${entity.country} ?: '---'">---</span>
+                </div>
+                <div></div>
+            </div>
+
+            <h3 class="text-xl font-bold text-gray-700 mb-8 border-b border-ihub-tealLight pb-4">Registered address</h3>
+            <div class="grid grid-cols-3 gap-x-8 gap-y-8 mb-12">
+                <div class="col-span-3">
+                    <span class="text-[10px] text-gray-400 font-bold uppercase tracking-widest block mb-1">Address Line 1</span>
+                    <span class="text-sm font-bold text-gray-800 uppercase" th:text="${entity.address?.streetName} ?: '---'">---</span>
+                </div>
+                <div>
+                    <span class="text-[10px] text-gray-400 font-bold uppercase tracking-widest block mb-1">Zip Code</span>
+                    <span class="text-sm font-bold text-gray-800" th:text="${entity.address?.zipCode} ?: '---'">---</span>
+                </div>
+                <div>
+                    <span class="text-[10px] text-gray-400 font-bold uppercase tracking-widest block mb-1">City</span>
+                    <span class="text-sm font-bold text-gray-800 uppercase" th:text="${entity.address?.city} ?: '---'">---</span>
+                </div>
+                <div>
+                    <span class="text-[10px] text-gray-400 font-bold uppercase tracking-widest block mb-1">Country</span>
+                    <span class="text-sm font-bold text-gray-800" th:text="${entity.address?.country} ?: '---'">---</span>
+                </div>
+            </div>
         </div>
-        
-        <div id="edit-mode">
+
+        <div id="edit-mode" x-show="isEditMode">
             <form th:fragment="edit-form" hx-post="/dashboard/details/legal-entity" hx-target="#tab-content" id="le-form">
                 <fieldset x-bind:disabled="!isEditMode" class="w-full border-none p-0 m-0">
                 <div hx-post="/dashboard/validate/legal-entity" hx-trigger="keyup delay:500ms from:input, change from:select, customValidation from:body" hx-include="#le-form" hx-swap="none"></div>
