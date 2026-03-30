@@ -1,21 +1,21 @@
 <div th:fragment="validation" style="display: none;">
     <!-- OOB Swaps for validation error messages -->
-    <span id="err-firstName" hx-swap-oob="true" class="text-sm text-red-600 mt-1 block"
+    <span id="err-firstName" hx-swap-oob="true" class="text-xs text-red-600 block absolute -bottom-5"
           th:text="${#fields.hasErrors('person.firstName')} ? ${#fields.errors('person.firstName')[0]} : ''"></span>
 
-    <span id="err-lastName" hx-swap-oob="true" class="text-sm text-red-600 mt-1 block"
+    <span id="err-lastName" hx-swap-oob="true" class="text-xs text-red-600 block absolute -bottom-5"
           th:text="${#fields.hasErrors('person.lastName')} ? ${#fields.errors('person.lastName')[0]} : ''"></span>
 
-    <span id="err-nationality" hx-swap-oob="true" class="text-sm text-red-600 mt-1 block"
+    <span id="err-nationality" hx-swap-oob="true" class="text-xs text-red-600 block absolute -bottom-5"
           th:text="${#fields.hasErrors('person.nationality')} ? ${#fields.errors('person.nationality')[0]} : ''"></span>
 
-    <span id="err-dateOfBirth" hx-swap-oob="true" class="text-sm text-red-600 mt-1 block"
+    <span id="err-dateOfBirth" hx-swap-oob="true" class="text-xs text-red-600 block absolute -bottom-5"
           th:text="${#fields.hasErrors('person.dateOfBirth')} ? ${#fields.errors('person.dateOfBirth')[0]} : ''"></span>
 
     <!-- OOB Swap for the Submit Button -->
-    <button id="np-submit-btn" hx-swap-oob="true" type="submit"
+    <button id="np-submit-btn" hx-swap-oob="true" type="button" @click="document.getElementById('np-submit-btn-hidden').click()"
             th:disabled="${#fields.hasErrors('person.*')}"
-            class="inline-flex w-full justify-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:ml-3 sm:w-auto sm:text-sm disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors">
-        Save
+            class="w-14 h-14 bg-ihub-teal hover:bg-[#12a1b0] rounded-full text-white shadow-lg flex flex-col items-center justify-center transition-transform hover:scale-105 active:scale-95 disabled:bg-gray-300 disabled:cursor-not-allowed">
+        <span class="text-[10px] font-bold tracking-wider uppercase">Save</span>
     </button>
 </div>

@@ -23,31 +23,24 @@
             theme: {
                 extend: {
                     colors: {
-                        primary: '#3F51B5', // Indigo-like primary
-                        secondary: '#FF4081', // Pink-like secondary
+                        ihub: {
+                            red: '#FE595A',
+                            navy: '#2C3545',
+                            teal: '#15B7C8',
+                            tealLight: '#E8F8FA',
+                            tealDark: '#0D6E7E',
+                            bg: '#F8F9FA',
+                            border: '#E2E8F0'
+                        }
                     }
                 }
             }
         }
     </script>
 </head>
-<body class="bg-gray-50 text-gray-800 antialiased h-screen flex flex-col">
-    <!-- Navbar -->
-    <nav class="bg-white shadow-sm border-b border-gray-100">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between h-16">
-                <div class="flex items-center">
-                    <span class="text-xl font-bold text-primary tracking-tight">KYC SecurePortal</span>
-                </div>
-            </div>
-        </div>
-    </nav>
-
-    <!-- Main Content -->
-    <main class="flex-grow flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
-        <div layout:fragment="content" th:replace="${content}">
-            <!-- Content will be injected here -->
-        </div>
-    </main>
+<body class="bg-gray-50 text-gray-800 antialiased min-h-screen flex flex-col font-sans">
+    <div layout:fragment="content" th:replace="${content}" class="flex flex-col flex-grow">
+        <!-- Content will be injected here -->
+    </div>
 </body>
 </html>
