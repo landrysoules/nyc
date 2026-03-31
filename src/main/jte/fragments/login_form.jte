@@ -1,23 +1,21 @@
-<div th:fragment="login-content" id="auth-content" class="flex flex-col items-center w-full">
+@param String error = null
+<div id="auth-content" class="flex flex-col items-center w-full">
     <div class="mb-8 text-center w-full">
         <h2 class="text-xl font-bold text-gray-800 mb-2">Sign in</h2>
         <p class="text-xs text-gray-600 font-medium">Access Internal Platform Portal</p>
     </div>
 
-    <form class="w-full flex flex-col gap-6" th:action="@{/auth/login}" method="POST" hx-post="/auth/login" hx-target="#auth-container" hx-swap="innerHTML">
-        <div th:if="${error}" class="bg-red-50 text-red-500 p-3 rounded-lg text-sm font-medium border border-red-100 flex items-center w-full mb-4">
+    <form class="w-full flex flex-col gap-6" action="/auth/login" method="POST" hx-post="/auth/login" hx-target="#auth-container" hx-swap="innerHTML">
+        @if(error != null)
+        <div class="bg-red-50 text-red-500 p-3 rounded-lg text-sm font-medium border border-red-100 flex items-center w-full mb-4">
             <svg class="w-5 h-5 mr-2 shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"></path></svg>
-            <span th:text="${error}"></span>
+            <span>${error}</span>
         </div>
-        
-        <!-- Username Input -->
+        @endif
+
         <div class="relative w-full border border-gray-300 rounded-lg bg-white h-12 flex items-center transition-colors focus-within:border-ihub-teal focus-within:ring-1 focus-within:ring-ihub-teal">
-            <label for="username" class="absolute -top-[9px] left-3 bg-white px-1 text-[10px] text-gray-500 font-medium uppercase tracking-wider">
-                Username
-            </label>
-            <span class="absolute -top-[9px] right-3 bg-white px-1 text-[10px] text-ihub-red font-bold uppercase tracking-wider">
-                Mandatory
-            </span>
+            <label for="username" class="absolute -top-[9px] left-3 bg-white px-1 text-[10px] text-gray-500 font-medium uppercase tracking-wider">Username</label>
+            <span class="absolute -top-[9px] right-3 bg-white px-1 text-[10px] text-ihub-red font-bold uppercase tracking-wider">Mandatory</span>
             <div class="pl-4 pr-3 flex items-center justify-center text-gray-400">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
             </div>
@@ -25,14 +23,9 @@
                    class="w-full h-full bg-transparent outline-none text-sm text-gray-800 pr-4 placeholder-transparent">
         </div>
 
-        <!-- Password Input -->
         <div class="relative w-full border border-gray-300 rounded-lg bg-white h-12 flex items-center transition-colors focus-within:border-ihub-teal focus-within:ring-1 focus-within:ring-ihub-teal">
-            <label for="password" class="absolute -top-[9px] left-3 bg-white px-1 text-[10px] text-gray-500 font-medium uppercase tracking-wider">
-                Password
-            </label>
-            <span class="absolute -top-[9px] right-3 bg-white px-1 text-[10px] text-ihub-red font-bold uppercase tracking-wider">
-                Mandatory
-            </span>
+            <label for="password" class="absolute -top-[9px] left-3 bg-white px-1 text-[10px] text-gray-500 font-medium uppercase tracking-wider">Password</label>
+            <span class="absolute -top-[9px] right-3 bg-white px-1 text-[10px] text-ihub-red font-bold uppercase tracking-wider">Mandatory</span>
             <div class="pl-4 pr-3 flex items-center justify-center text-gray-400">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
             </div>
@@ -44,18 +37,17 @@
         </div>
 
         <div class="w-full mt-2">
-            <button type="submit"
-                    class="w-full flex justify-center py-3.5 px-4 rounded-full text-sm font-extrabold tracking-wide text-white bg-ihub-teal hover:bg-[#12a1b0] focus:outline-none focus:ring-2 focus:ring-offset-1 focus:ring-ihub-teal transition-colors uppercase">
+            <button type="submit" class="w-full flex justify-center py-3.5 px-4 rounded-full text-sm font-extrabold tracking-wide text-white bg-ihub-teal hover:bg-[#12a1b0] focus:outline-none focus:ring-2 focus:ring-offset-1 focus:ring-ihub-teal transition-colors uppercase">
                 Sign in
             </button>
         </div>
-        
+
         <div class="relative flex items-center py-1">
             <div class="flex-grow border-t border-gray-300"></div>
             <span class="flex-shrink-0 mx-4 text-gray-500 text-sm">Or</span>
             <div class="flex-grow border-t border-gray-300"></div>
         </div>
-        
+
         <div class="w-full">
             <button type="button" class="w-full flex justify-center items-center py-4 px-4 rounded-xl border border-ihub-teal bg-cyan-50 hover:bg-cyan-100 focus:outline-none focus:ring-2 focus:ring-ihub-teal transition-colors">
                 <span class="text-sm font-semibold text-gray-800 mr-2">Sign in with</span>

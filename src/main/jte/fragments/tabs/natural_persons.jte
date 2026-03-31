@@ -1,8 +1,9 @@
-<div th:fragment="content" class="fade-in w-full pb-20 relative min-h-[500px]">
-    
-    <!-- Top Stats Banner -->
+@import com.kyc.app.model.NaturalPerson
+@import java.util.List
+@param List<NaturalPerson> persons
+<div class="fade-in w-full pb-20 relative min-h-[500px]">
+
     <div class="flex flex-wrap w-full gap-8 mb-6 px-2 text-sm text-gray-800">
-        <!-- Pending update -->
         <div class="flex flex-col">
             <h4 class="font-bold mb-2">Pending update</h4>
             <div class="flex items-center space-x-4">
@@ -10,7 +11,6 @@
                 <div class="flex items-center"><svg class="w-4 h-4 mr-1 text-gray-400" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd" /></svg> <span class="text-xs text-gray-500 mr-1">i-Hub</span> <span class="font-bold text-blue-500 text-lg">9733</span></div>
             </div>
         </div>
-        <!-- Pending creation -->
         <div class="flex flex-col">
             <h4 class="font-bold mb-2">Pending creation</h4>
             <div class="flex items-center space-x-4">
@@ -20,7 +20,6 @@
         </div>
     </div>
 
-    <!-- Table Container -->
     <div class="bg-white rounded-[20px] shadow-sm border border-gray-100 overflow-visible w-full pb-4">
         <div class="overflow-x-auto w-full">
             <table class="w-full text-left border-collapse">
@@ -32,66 +31,55 @@
                                 Creation
                             </div>
                         </th>
-                        <th class="px-6 py-4 text-[11px] font-bold text-gray-400 uppercase tracking-widest bg-white">
-                            i-Hub ID
-                        </th>
-                        <th class="px-6 py-4 text-[11px] font-bold text-gray-400 uppercase tracking-widest bg-white">
-                            Last name
-                        </th>
-                        <th class="px-6 py-4 text-[11px] font-bold text-gray-400 uppercase tracking-widest bg-white">
-                            First name
-                        </th>
+                        <th class="px-6 py-4 text-[11px] font-bold text-gray-400 uppercase tracking-widest bg-white">i-Hub ID</th>
+                        <th class="px-6 py-4 text-[11px] font-bold text-gray-400 uppercase tracking-widest bg-white">Last name</th>
+                        <th class="px-6 py-4 text-[11px] font-bold text-gray-400 uppercase tracking-widest bg-white">First name</th>
                         <th class="px-6 py-4 text-[11px] font-bold text-gray-400 uppercase tracking-widest bg-white text-center">Clients</th>
                         <th class="px-6 py-4 text-[11px] font-bold text-gray-400 uppercase tracking-widest bg-white">Nationalities</th>
                         <th class="w-16 bg-white rounded-tr-[20px]"></th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr th:each="person : ${persons}" 
-                        th:attr="hx-get=@{/dashboard/details/natural-person/{id}(id=${person.id})}, hx-target='#tab-content'" 
+                    @if(persons.isEmpty())
+                    <tr>
+                        <td colspan="7" class="text-center py-10 text-gray-500 text-sm">No natural persons found.</td>
+                    </tr>
+                    @else
+                    @for(var person : persons)
+                    <tr hx-get="/dashboard/details/natural-person/${person.getId()}" hx-target="#tab-content"
                         class="hover:bg-ihub-tealLight cursor-pointer transition-colors border-b border-gray-50 bg-white group relative">
-                        <!-- Pseudo 'Creation' Data -->
-                        <td class="px-6 py-4 text-xs font-bold text-gray-600">
-                            28/08/2025
-                        </td>
-                        <td class="px-6 py-4 text-xs font-bold text-gray-500 tracking-wide" th:text="${person.id}"></td>
-                        <td class="px-6 py-4 text-xs font-bold text-gray-800 uppercase" th:text="${person.lastName}"></td>
-                        <td class="px-6 py-4 text-xs font-bold text-gray-800 uppercase" th:text="${person.firstName}"></td>
+                        <td class="px-6 py-4 text-xs font-bold text-gray-600">28/08/2025</td>
+                        <td class="px-6 py-4 text-xs font-bold text-gray-500 tracking-wide">${person.getId()}</td>
+                        <td class="px-6 py-4 text-xs font-bold text-gray-800 uppercase">${person.getLastName()}</td>
+                        <td class="px-6 py-4 text-xs font-bold text-gray-800 uppercase">${person.getFirstName()}</td>
                         <td class="px-6 py-3 text-center">
-                            <!-- Dummy Client Icon -->
                             <div class="inline-flex items-center justify-center w-6 h-6 rounded bg-gray-200 text-gray-600">
                                 <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path d="M10.394 2.08a1 1 0 00-.788 0l-7 3a1 1 0 000 1.84L5.25 8.051a.999.999 0 01.356-.257l4-1.714a1 1 0 11.788 1.838L7.667 9.088l1.94.831a1 1 0 00.787 0l7-3a1 1 0 000-1.838l-7-3zM3.31 8.56l-1.42.61a1 1 0 000 1.838l7 3a1 1 0 00.788 0l7-3a1 1 0 000-1.838l-1.42-.61-5.186 2.222a1 1 0 01-.788 0L3.31 8.56z"/></svg>
                             </div>
                         </td>
-                        <td class="px-6 py-3 text-xs font-medium text-gray-700">
-                            <span th:text="${person.nationality}"></span>
-                        </td>
+                        <td class="px-6 py-3 text-xs font-medium text-gray-700">${person.getNationality()}</td>
                         <td class="px-4 py-3 text-right sticky right-0">
                             <button type="button" class="w-8 h-8 rounded-full bg-ihub-teal text-white flex items-center justify-center opacity-80 group-hover:opacity-100 transition-opacity">
                                 <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path d="M6 10a2 2 0 11-4 0 2 2 0 014 0zM12 10a2 2 0 11-4 0 2 2 0 014 0zM16 12a2 2 0 100-4 2 2 0 000 4z" /></svg>
                             </button>
                         </td>
                     </tr>
-                    <tr th:if="${#lists.isEmpty(persons)}">
-                        <td colspan="7" class="text-center py-10 text-gray-500 text-sm">No natural persons found.</td>
-                    </tr>
+                    @endfor
+                    @endif
                 </tbody>
             </table>
         </div>
-        
-        <!-- Pagination Footer -->
+
         <div class="flex items-center justify-between px-8 py-4 mt-2">
             <div class="flex items-end gap-2 text-gray-400 leading-none">
-                <span class="text-3xl font-extrabold text-gray-300 tracking-tighter" th:text="${#lists.size(persons)}"></span>
+                <span class="text-3xl font-extrabold text-gray-300 tracking-tighter">${persons.size()}</span>
                 <span class="text-[10px] font-bold uppercase mb-1">NATURAL PERSONS</span>
             </div>
-            
             <div class="flex items-center gap-4 text-xs font-bold text-gray-400">
                 <span>1</span>
                 <span class="text-gray-300">of 100</span>
                 <svg class="w-4 h-4 text-gray-300" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
             </div>
-            
             <div class="flex items-center text-xs font-bold text-gray-600 border border-gray-200 rounded-lg px-3 py-2 cursor-pointer">
                 10 Per Page
                 <svg class="w-3 h-3 ml-2 text-gray-400" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"></path></svg>
@@ -99,9 +87,8 @@
         </div>
     </div>
 
-    <!-- Floating Action Buttons -->
     <div class="fixed bottom-8 right-8 flex flex-col gap-3 z-50">
-        <button hx-get="/dashboard/details/natural-person/0" hx-target="#tab-content" 
+        <button hx-get="/dashboard/details/natural-person/0" hx-target="#tab-content"
                 class="w-12 h-12 bg-ihub-teal hover:bg-[#12a1b0] rounded-full text-white shadow-lg flex items-center justify-center transition-transform hover:scale-105 active:scale-95">
             <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"></path></svg>
         </button>

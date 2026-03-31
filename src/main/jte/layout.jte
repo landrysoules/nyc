@@ -1,23 +1,20 @@
+@import gg.jte.Content
+@param String title = "KYC Backoffice"
+@param Content content
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title th:text="${title} ?: 'KYC Backoffice'">KYC Backoffice</title>
-    <!-- Tailwind CSS (CDN for POC as requested) -->
+    <title>${title}</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Font -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         body { font-family: 'Inter', sans-serif; }
     </style>
-    <!-- HTMX -->
     <script src="https://unpkg.com/htmx.org@1.9.11"></script>
-    
-    <!-- Alpine.js & Custom App Logic -->
     <script type="module" src="/js/app.js"></script>
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
-    
     <script>
         tailwind.config = {
             theme: {
@@ -39,8 +36,8 @@
     </script>
 </head>
 <body class="bg-gray-50 text-gray-800 antialiased min-h-screen flex flex-col font-sans">
-    <div layout:fragment="content" th:replace="${content}" class="flex flex-col flex-grow">
-        <!-- Content will be injected here -->
+    <div class="flex flex-col flex-grow">
+        ${content}
     </div>
 </body>
 </html>

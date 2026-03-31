@@ -1,4 +1,4 @@
-<div th:fragment="kyc-content" id="kyc-content" class="text-center py-10 px-4" x-data="kycSuccess()">
+<div id="kyc-content" class="text-center py-10 px-4" x-data="kycSuccess()">
     <div class="inline-flex justify-center items-center w-20 h-20 rounded-full bg-green-100 text-green-500 mb-6 shadow-md shadow-green-100 ring-4 ring-green-50 animate-bounce">
         <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
@@ -6,7 +6,6 @@
     </div>
     <h3 class="text-2xl font-bold text-gray-900 mb-2">Verification Successful!</h3>
     <p class="text-gray-500 mb-8 max-w-sm mx-auto">Your document has been securely validated and approved. Returning to parent application...</p>
-    
     <button @click="window.location.reload()" tabindex="0"
             class="inline-flex justify-center py-2 px-6 border border-gray-300 shadow-sm text-sm font-medium rounded-lg text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors">
         Submit Another Document

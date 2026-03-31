@@ -1,4 +1,8 @@
-<div th:fragment="content" class="fade-in w-full pb-20 relative min-h-[500px]">
+@import com.kyc.app.model.Contract
+@import java.util.List
+@param List<Contract> contracts
+<div class="fade-in w-full pb-20 relative min-h-[500px]">
+
     <div class="flex flex-wrap w-full gap-8 mb-6 px-2 text-sm text-gray-800">
         <div class="flex flex-col">
             <h4 class="font-bold mb-2">Pending signatures</h4>
@@ -8,7 +12,6 @@
         </div>
     </div>
 
-    <!-- Table Container -->
     <div class="bg-white rounded-[20px] shadow-sm border border-gray-100 overflow-visible w-full pb-4">
         <div class="overflow-x-auto w-full">
             <table class="w-full text-left border-collapse">
@@ -22,32 +25,39 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr th:each="contract : ${contracts}" 
-                        th:attr="hx-get=@{/dashboard/details/contract/{id}(id=${contract.id})}, hx-target='#tab-content'" 
+                    @if(contracts.isEmpty())
+                    <tr>
+                        <td colspan="5" class="text-center py-10 text-gray-500 text-sm">No contracts found.</td>
+                    </tr>
+                    @else
+                    @for(var contract : contracts)
+                    <tr hx-get="/dashboard/details/contract/${contract.getId()}" hx-target="#tab-content"
                         class="hover:bg-ihub-tealLight cursor-pointer transition-colors border-b border-gray-50 bg-white group relative">
                         <td class="px-6 py-4 text-xs font-bold text-gray-600">28/08/2025</td>
-                        <td class="px-6 py-4 text-xs font-bold text-gray-500 tracking-wide" th:text="${contract.id}"></td>
-                        <td class="px-6 py-4 text-xs font-bold text-gray-800 uppercase" th:text="${contract.name}"></td>
+                        <td class="px-6 py-4 text-xs font-bold text-gray-500 tracking-wide">${contract.getId()}</td>
+                        <td class="px-6 py-4 text-xs font-bold text-gray-800 uppercase">${contract.getName()}</td>
                         <td class="px-6 py-3 text-center">
-                            <span class="inline-flex items-center px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest bg-green-100 text-green-700" th:if="${contract.status == 'ACTIVE'}" th:text="${contract.status}"></span>
-                            <span class="inline-flex items-center px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest bg-gray-100 text-gray-600" th:if="${contract.status != 'ACTIVE'}" th:text="${contract.status}"></span>
+                            @if("ACTIVE".equals(contract.getStatus()))
+                            <span class="inline-flex items-center px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest bg-green-100 text-green-700">${contract.getStatus()}</span>
+                            @else
+                            <span class="inline-flex items-center px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest bg-gray-100 text-gray-600">${contract.getStatus()}</span>
+                            @endif
                         </td>
                         <td class="px-4 py-3 text-right sticky right-0">
                             <button type="button" class="w-8 h-8 rounded-full bg-ihub-teal text-white flex items-center justify-center opacity-80 group-hover:opacity-100 transition-opacity">
-                                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path d="M6 10a2 2 0 11-4 0 2 2 0 014 0zM12 10a2 2 0 11-4 0 2 2 0 014 0zM16 12a2 2 0 100-4 2 2 0 000 4z" /></svg>
+                                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path d="M6 10a2 2 0 11-4 0 2 2 0 114 0zM12 10a2 2 0 11-4 0 2 2 0 014 0zM16 12a2 2 0 100-4 2 2 0 000 4z" /></svg>
                             </button>
                         </td>
                     </tr>
-                    <tr th:if="${#lists.isEmpty(contracts)}">
-                        <td colspan="5" class="text-center py-10 text-gray-500 text-sm">No contracts found.</td>
-                    </tr>
+                    @endfor
+                    @endif
                 </tbody>
             </table>
         </div>
-        
+
         <div class="flex items-center justify-between px-8 py-4 mt-2">
             <div class="flex items-end gap-2 text-gray-400 leading-none">
-                <span class="text-3xl font-extrabold text-gray-300 tracking-tighter" th:text="${#lists.size(contracts)}"></span>
+                <span class="text-3xl font-extrabold text-gray-300 tracking-tighter">${contracts.size()}</span>
                 <span class="text-[10px] font-bold uppercase mb-1">CONTRACTS</span>
             </div>
             <div class="flex items-center gap-4 text-xs font-bold text-gray-400">
@@ -60,9 +70,8 @@
         </div>
     </div>
 
-    <!-- Floating Action Buttons -->
     <div class="fixed bottom-8 right-8 flex flex-col gap-3 z-50">
-        <button hx-get="/dashboard/details/contract/0" hx-target="#tab-content" 
+        <button hx-get="/dashboard/details/contract/0" hx-target="#tab-content"
                 class="w-12 h-12 bg-ihub-teal hover:bg-[#12a1b0] rounded-full text-white shadow-lg flex items-center justify-center transition-transform hover:scale-105 active:scale-95">
             <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"></path></svg>
         </button>

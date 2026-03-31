@@ -56,7 +56,7 @@ public class AuthController {
             return "fragments/otp"; // Return the OTP input fragment
         } else {
             model.addAttribute("error", "Identifiants invalides");
-            return "fragments/login-form"; // Assuming we extract login form to a fragment or handle error
+            return "fragments/login_form";
         }
     }
 
@@ -65,7 +65,7 @@ public class AuthController {
         HttpSession session = request.getSession(false);
         if (session == null || session.getAttribute("PRE_AUTH_USER") == null) {
             model.addAttribute("error", "Session expirée");
-            return "fragments/login-form";
+            return "fragments/login_form";
         }
 
         String username = (String) session.getAttribute("PRE_AUTH_USER");
@@ -96,6 +96,6 @@ public class AuthController {
         }
         
         model.addAttribute("error", "Utilisateur non trouvé");
-        return "fragments/login-form";
+        return "fragments/login_form";
     }
 }

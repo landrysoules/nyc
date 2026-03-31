@@ -43,7 +43,7 @@ public class KycController {
             strategy = validatorFactory.getStrategy(documentType);
         } catch (IllegalArgumentException e) {
             model.addAttribute("error", "Type de document non supporté");
-            return "fragments/kyc-form";
+            return "fragments/kyc_form";
         }
 
         boolean isValid = strategy.validate(document);
@@ -56,7 +56,7 @@ public class KycController {
             document.setStatus(KycStatus.REJECTED);
             documentRepository.save(document);
             model.addAttribute("error", "Validation KYC échouée. Données incorrectes selon la stratégie: " + documentType);
-            return "fragments/kyc-form";
+            return "fragments/kyc_form";
         }
     }
 }

@@ -1,0 +1,110 @@
+@import com.kyc.app.model.NaturalPerson
+@import java.util.Map
+@param NaturalPerson person
+@param Map<String, String> fieldErrors = null
+@param boolean hasErrors = false
+<form hx-post="/dashboard/details/natural-person" hx-target="#tab-content" id="np-form">
+    <fieldset x-bind:disabled="!isEditMode" class="w-full border-none p-0 m-0">
+    <div hx-post="/dashboard/validate/natural-person" hx-trigger="keyup delay:500ms from:input, change from:select, customValidation from:body" hx-include="#np-form" hx-swap="none"></div>
+    <input type="hidden" name="id" value="${person.getId() != null ? person.getId().toString() : ""}"/>
+
+    <h3 class="text-xl font-bold text-gray-700 mb-8 mt-2 border-b border-ihub-tealLight pb-4">Personal data</h3>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-6">
+
+        <div class="col-span-1 border border-gray-200 rounded px-4 py-3 relative">
+            <label class="absolute -top-[9px] left-3 bg-white px-1 text-[9px] text-gray-500 font-bold uppercase tracking-widest">Gender</label>
+            <div class="flex items-center space-x-6 text-sm text-gray-600 font-medium h-full pt-1">
+                <label class="flex items-center cursor-pointer">
+                    <input type="radio" name="gender" value="FEMALE" class="appearance-none w-4 h-4 border border-gray-300 rounded-full checked:border-ihub-teal checked:bg-ihub-teal mr-2 border-[4px] bg-white ring-1 ring-ihub-teal transition-all focus:outline-none" />
+                    <span class="uppercase text-xs tracking-wider">Female</span>
+                </label>
+                <label class="flex items-center cursor-pointer">
+                    <input type="radio" name="gender" value="MALE" checked class="appearance-none w-4 h-4 border border-ihub-teal rounded-full checked:border-white checked:bg-ihub-teal mr-2 border-[4px] bg-ihub-teal ring-1 ring-ihub-teal transition-all focus:outline-none shadow-[inset_0_0_0_2px_white]" />
+                    <span class="uppercase text-xs tracking-wider">Male</span>
+                </label>
+                <label class="flex items-center cursor-pointer">
+                    <input type="radio" name="gender" value="OTHER" class="appearance-none w-4 h-4 border border-gray-300 rounded-full checked:border-ihub-teal checked:bg-ihub-teal mr-2 border-[4px] bg-white ring-1 ring-ihub-teal transition-all focus:outline-none" />
+                    <span class="uppercase text-xs tracking-wider">Other</span>
+                </label>
+            </div>
+        </div>
+
+        <div class="col-span-1 border border-gray-200 rounded px-4 py-1 relative flex items-center h-[52px]">
+            <label class="absolute -top-[9px] left-3 bg-white px-1 text-[9px] text-gray-500 font-bold uppercase tracking-widest">Title</label>
+            <select class="w-full bg-transparent outline-none text-sm text-gray-800 appearance-none pt-1 cursor-pointer">
+                <option>Mister</option>
+                <option>Madam</option>
+            </select>
+            <div class="absolute right-4 text-gray-400 pointer-events-none">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+            </div>
+        </div>
+
+        <div class="col-span-1 border border-gray-200 rounded px-4 py-1 relative flex items-center h-[52px]">
+            <label class="absolute -top-[9px] left-3 bg-white px-1 text-[9px] text-gray-500 font-bold uppercase tracking-widest">Last Name</label>
+            <span class="absolute -top-[9px] right-3 bg-white px-1 text-[9px] text-ihub-red font-bold uppercase tracking-widest">Mandatory</span>
+            <input type="text" x-model.fill="lastName" name="lastName" value="${person.getLastName() != null ? person.getLastName() : ""}" class="w-full h-full bg-transparent outline-none text-sm text-gray-800 pt-1 font-bold">
+            <span id="err-lastName" class="text-xs text-red-600 block absolute -bottom-5">${fieldErrors != null ? fieldErrors.getOrDefault("lastName", "") : ""}</span>
+        </div>
+
+        <div class="col-span-1 border border-gray-200 rounded px-4 py-1 relative flex items-center h-[52px]">
+            <label class="absolute -top-[9px] left-3 bg-white px-1 text-[9px] text-gray-500 font-bold uppercase tracking-widest">First Name</label>
+            <span class="absolute -top-[9px] right-3 bg-white px-1 text-[9px] text-ihub-red font-bold uppercase tracking-widest">Mandatory</span>
+            <input type="text" x-model.fill="firstName" name="firstName" value="${person.getFirstName() != null ? person.getFirstName() : ""}" class="w-full h-full bg-transparent outline-none text-sm text-gray-800 pt-1">
+            <span id="err-firstName" class="text-xs text-red-600 block absolute -bottom-5">${fieldErrors != null ? fieldErrors.getOrDefault("firstName", "") : ""}</span>
+        </div>
+
+        <div class="col-span-1 border border-gray-200 rounded px-4 py-1 relative flex items-center h-[52px]">
+            <label class="absolute -top-[9px] left-3 bg-white px-1 text-[9px] text-gray-500 font-bold uppercase tracking-widest">Middle Name</label>
+            <input type="text" class="w-full h-full bg-transparent outline-none text-sm text-gray-800 pt-1">
+        </div>
+
+        <div class="col-span-1 border border-gray-200 rounded px-4 py-1 relative flex items-center h-[52px]">
+            <label class="absolute -top-[9px] left-3 bg-white px-1 text-[9px] text-gray-500 font-bold uppercase tracking-widest">Date of Birth</label>
+            <span class="absolute -top-[9px] right-3 bg-white px-1 text-[9px] text-orange-400 font-bold uppercase tracking-widest">Recommended</span>
+            <input type="date" x-model.fill="dateOfBirth" name="dateOfBirth" value="${person.getDateOfBirth() != null ? person.getDateOfBirth().toString() : ""}" class="w-full h-full bg-transparent outline-none text-sm text-gray-800 pt-1">
+            <span id="err-dateOfBirth" class="text-xs text-red-600 block absolute -bottom-5">${fieldErrors != null ? fieldErrors.getOrDefault("dateOfBirth", "") : ""}</span>
+        </div>
+
+        <div class="col-span-1 border border-gray-200 rounded px-4 py-1 relative flex items-center h-[52px]" @click.outside="handleClickOutside()">
+            <label class="absolute -top-[9px] left-3 bg-white px-1 text-[9px] text-gray-500 font-bold uppercase tracking-widest">Nationality</label>
+            <span class="absolute -top-[9px] right-3 bg-white px-1 text-[9px] text-orange-400 font-bold uppercase tracking-widest">Recommended</span>
+            <input type="text" autocomplete="off" placeholder="e.g. Portugal" x-model.fill="searchQuery" @focus="showNationalityList = true" value="${person.getNationality() != null ? person.getNationality() : ""}" class="w-full h-full bg-transparent outline-none text-sm text-gray-800 pt-1 cursor-pointer font-bold">
+            <div class="absolute right-4 text-gray-400 pointer-events-none">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+            </div>
+            <input type="hidden" name="nationality" x-model.fill="nationality" value="${person.getNationality() != null ? person.getNationality() : ""}">
+            <ul x-show="showNationalityList" x-cloak class="absolute top-[52px] left-0 w-full bg-white border border-gray-300 rounded-md shadow-lg max-h-40 overflow-auto z-50">
+                <template x-for="c in filteredCountries" :key="c">
+                    <li class="p-2 hover:bg-ihub-tealLight cursor-pointer text-sm font-medium text-gray-700 transition-colors" @click="selectCountry(c)" x-text="c"></li>
+                </template>
+            </ul>
+            <span id="err-nationality" class="text-xs text-red-600 block absolute -bottom-5">${fieldErrors != null ? fieldErrors.getOrDefault("nationality", "") : ""}</span>
+        </div>
+    </div>
+
+    <h3 class="text-xl font-bold text-gray-700 mb-8 mt-12 border-b border-ihub-tealLight pb-4">Residence address</h3>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-x-6 gap-y-6">
+        <div class="col-span-3 border border-gray-200 rounded px-4 py-1 relative flex items-center h-[52px]">
+            <label class="absolute -top-[9px] left-3 bg-white px-1 text-[9px] text-gray-500 font-bold uppercase tracking-widest">Address Line 1</label>
+            <input type="text" name="address.streetName" value="${person.getAddress() != null && person.getAddress().getStreetName() != null ? person.getAddress().getStreetName() : ""}" class="w-full h-full bg-transparent outline-none text-sm text-gray-800 pt-1 uppercase">
+        </div>
+        <div class="col-span-1 border border-gray-200 rounded px-4 py-1 relative flex items-center h-[52px]">
+            <label class="absolute -top-[9px] left-3 bg-white px-1 text-[9px] text-gray-500 font-bold uppercase tracking-widest">Zip Code</label>
+            <input type="text" name="address.zipCode" value="${person.getAddress() != null && person.getAddress().getZipCode() != null ? person.getAddress().getZipCode() : ""}" class="w-full h-full bg-transparent outline-none text-sm text-gray-800 pt-1">
+        </div>
+        <div class="col-span-1 border border-gray-200 rounded px-4 py-1 relative flex items-center h-[52px]">
+            <label class="absolute -top-[9px] left-3 bg-white px-1 text-[9px] text-gray-500 font-bold uppercase tracking-widest">City</label>
+            <input type="text" name="address.city" value="${person.getAddress() != null && person.getAddress().getCity() != null ? person.getAddress().getCity() : ""}" class="w-full h-full bg-transparent outline-none text-sm text-gray-800 pt-1 uppercase">
+        </div>
+        <div class="col-span-1 border border-gray-200 rounded px-4 py-1 relative flex items-center h-[52px]">
+            <label class="absolute -top-[9px] left-3 bg-white px-1 text-[9px] text-gray-500 font-bold uppercase tracking-widest">Country</label>
+            <input type="text" name="address.country" value="${person.getAddress() != null && person.getAddress().getCountry() != null ? person.getAddress().getCountry() : ""}" class="w-full h-full bg-transparent outline-none text-sm text-gray-800 pt-1">
+        </div>
+    </div>
+
+    <button type="submit" id="np-submit-btn-hidden" class="hidden">Save Hidden</button>
+    </fieldset>
+</form>
