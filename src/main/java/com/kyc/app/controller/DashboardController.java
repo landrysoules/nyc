@@ -99,7 +99,7 @@ public class DashboardController {
             return "fragments/details/natural_person_details_form";
         }
         naturalPersonService.save(person);
-        response.setHeader("HX-Trigger", "{\"showtoast\":{\"type\":\"success\",\"message\":\"Saved successfully\"}}");
+        HxTrigger.toast(response, HxTrigger.Toast.success, "Saved successfully");
         return tabNaturalPersons(model);
     }
 
@@ -130,7 +130,7 @@ public class DashboardController {
             return "fragments/details/legal_entity_details_form";
         }
         legalEntityService.save(entity);
-        response.setHeader("HX-Trigger", "{\"showtoast\":{\"type\":\"success\",\"message\":\"Saved successfully\"}}");
+        HxTrigger.toast(response, HxTrigger.Toast.success, "Saved successfully");
         return tabLegalEntities(model);
     }
 
@@ -161,7 +161,7 @@ public class DashboardController {
             return "fragments/details/contract_details_form";
         }
         contractService.save(contract);
-        response.setHeader("HX-Trigger", "{\"showtoast\":{\"type\":\"success\",\"message\":\"Saved successfully\"}}");
+        HxTrigger.toast(response, HxTrigger.Toast.success, "Saved successfully");
         return tabContracts(model);
     }
 }

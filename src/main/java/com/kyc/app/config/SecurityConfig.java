@@ -26,7 +26,14 @@ public class SecurityConfig {
                 )
                 // We handle login manually in AuthController with 2FA
                 .formLogin(AbstractHttpConfigurer::disable)
-                .exceptionHandling(e -> e.authenticationEntryPoint((request, response, authException) -> response.sendRedirect("/auth/login")))
+                .exceptionHandling(e -> e.authenticationEntryPoint((request, response, authException) -> {
+                    if ("true".equals(request.getHeader("HX-Request"))) {
+                        response.setHeader("HX-Redirect", "/auth/login");
+                        response.setStatus(200);
+                    } else {
+                        response.sendRedirect("/auth/login");
+                    }
+                }))
                 .logout(logout -> logout
                         .logoutUrl("/auth/logout")
                         .logoutSuccessUrl("/auth/login")
