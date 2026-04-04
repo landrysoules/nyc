@@ -87,13 +87,6 @@
         </div>
     </div>
 
-    <div class="fixed bottom-8 right-8 flex flex-col gap-3 z-50" x-show="isEditMode" x-transition>
-        <button type="button" @click="document.getElementById('contract-submit-btn-hidden').click()" id="contract-submit-btn"
-                disabled="${hasErrors}"
-                class="w-14 h-14 bg-ihub-teal hover:bg-[#12a1b0] rounded-full text-white shadow-lg flex flex-col items-center justify-center transition-transform hover:scale-105 active:scale-95 disabled:bg-gray-300 disabled:cursor-not-allowed">
-            <span class="text-[10px] font-bold tracking-wider uppercase">Save</span>
-        </button>
-    </div>
     <div class="fixed bottom-8 left-8 z-50">
         <button type="button" hx-get="/dashboard/tab/contracts" hx-target="#tab-content" class="px-8 py-3 rounded-full border text-gray-600 font-bold border-gray-300 text-xs uppercase hover:bg-gray-50 transition-colors shadow-sm bg-white">Back</button>
     </div>

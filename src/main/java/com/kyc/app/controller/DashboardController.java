@@ -50,7 +50,7 @@ public class DashboardController {
         return "dashboard";
     }
 
-    // --- Tabs Data ---
+    // --- Tabs ---
 
     @GetMapping("/dashboard/tab/natural-persons")
     public String tabNaturalPersons(Model model) {
@@ -70,16 +70,11 @@ public class DashboardController {
         return "fragments/tabs/contracts";
     }
 
-    // --- Details Panels (Read Only & Forms) ---
+    // --- Details ---
 
     @GetMapping("/dashboard/details/natural-person/{id}")
     public String detailsNaturalPerson(@PathVariable("id") Long id, Model model) {
-        NaturalPerson person;
-        if (id > 0) {
-            person = naturalPersonService.findById(id).orElse(new NaturalPerson());
-        } else {
-            person = new NaturalPerson();
-        }
+        NaturalPerson person = id > 0 ? naturalPersonService.findById(id).orElse(new NaturalPerson()) : new NaturalPerson();
         model.addAttribute("person", person);
         model.addAttribute("isValid", validator.validate(person).isEmpty());
         return "fragments/details/natural_person_details";
@@ -87,31 +82,30 @@ public class DashboardController {
 
     @PostMapping("/dashboard/validate/natural-person")
     public String validateNaturalPerson(@Valid @ModelAttribute("person") NaturalPerson person, BindingResult result, Model model) {
+        model.addAttribute("person", person);
         model.addAttribute("fieldErrors", buildFieldErrors(result));
         model.addAttribute("hasErrors", result.hasErrors());
-        return "fragments/details/natural_person_validation";
+        return "fragments/details/natural_person_details_form";
     }
 
     @PostMapping("/dashboard/details/natural-person")
     public String saveNaturalPerson(@Valid @ModelAttribute("person") NaturalPerson person, BindingResult result, Model model, HttpServletResponse response) {
         if (result.hasErrors()) {
-            response.setHeader("HX-Retarget", "#np-form");
+            response.setHeader("HX-Retarget", "#np-form-container");
+            response.setHeader("HX-Reswap", "morph");
+            model.addAttribute("person", person);
             model.addAttribute("fieldErrors", buildFieldErrors(result));
             model.addAttribute("hasErrors", true);
             return "fragments/details/natural_person_details_form";
         }
         naturalPersonService.save(person);
+        response.setHeader("HX-Trigger", "{\"showtoast\":{\"type\":\"success\",\"message\":\"Saved successfully\"}}");
         return tabNaturalPersons(model);
     }
 
     @GetMapping("/dashboard/details/legal-entity/{id}")
     public String detailsLegalEntity(@PathVariable("id") Long id, Model model) {
-        LegalEntity entity;
-        if (id > 0) {
-            entity = legalEntityService.findById(id).orElse(new LegalEntity());
-        } else {
-            entity = new LegalEntity();
-        }
+        LegalEntity entity = id > 0 ? legalEntityService.findById(id).orElse(new LegalEntity()) : new LegalEntity();
         model.addAttribute("entity", entity);
         model.addAttribute("isValid", validator.validate(entity).isEmpty());
         return "fragments/details/legal_entity_details";
@@ -119,31 +113,30 @@ public class DashboardController {
 
     @PostMapping("/dashboard/validate/legal-entity")
     public String validateLegalEntity(@Valid @ModelAttribute("entity") LegalEntity entity, BindingResult result, Model model) {
+        model.addAttribute("entity", entity);
         model.addAttribute("fieldErrors", buildFieldErrors(result));
         model.addAttribute("hasErrors", result.hasErrors());
-        return "fragments/details/legal_entity_validation";
+        return "fragments/details/legal_entity_details_form";
     }
 
     @PostMapping("/dashboard/details/legal-entity")
     public String saveLegalEntity(@Valid @ModelAttribute("entity") LegalEntity entity, BindingResult result, Model model, HttpServletResponse response) {
         if (result.hasErrors()) {
-            response.setHeader("HX-Retarget", "#le-form");
+            response.setHeader("HX-Retarget", "#le-form-container");
+            response.setHeader("HX-Reswap", "morph");
+            model.addAttribute("entity", entity);
             model.addAttribute("fieldErrors", buildFieldErrors(result));
             model.addAttribute("hasErrors", true);
             return "fragments/details/legal_entity_details_form";
         }
         legalEntityService.save(entity);
+        response.setHeader("HX-Trigger", "{\"showtoast\":{\"type\":\"success\",\"message\":\"Saved successfully\"}}");
         return tabLegalEntities(model);
     }
 
     @GetMapping("/dashboard/details/contract/{id}")
     public String detailsContract(@PathVariable("id") Long id, Model model) {
-        Contract contract;
-        if (id > 0) {
-            contract = contractService.findById(id).orElse(new Contract());
-        } else {
-            contract = new Contract();
-        }
+        Contract contract = id > 0 ? contractService.findById(id).orElse(new Contract()) : new Contract();
         model.addAttribute("contract", contract);
         model.addAttribute("isValid", validator.validate(contract).isEmpty());
         return "fragments/details/contract_details";
@@ -151,20 +144,24 @@ public class DashboardController {
 
     @PostMapping("/dashboard/validate/contract")
     public String validateContract(@Valid @ModelAttribute("contract") Contract contract, BindingResult result, Model model) {
+        model.addAttribute("contract", contract);
         model.addAttribute("fieldErrors", buildFieldErrors(result));
         model.addAttribute("hasErrors", result.hasErrors());
-        return "fragments/details/contract_validation";
+        return "fragments/details/contract_details_form";
     }
 
     @PostMapping("/dashboard/details/contract")
     public String saveContract(@Valid @ModelAttribute("contract") Contract contract, BindingResult result, Model model, HttpServletResponse response) {
         if (result.hasErrors()) {
-            response.setHeader("HX-Retarget", "#contract-form");
+            response.setHeader("HX-Retarget", "#contract-form-container");
+            response.setHeader("HX-Reswap", "morph");
+            model.addAttribute("contract", contract);
             model.addAttribute("fieldErrors", buildFieldErrors(result));
             model.addAttribute("hasErrors", true);
             return "fragments/details/contract_details_form";
         }
         contractService.save(contract);
+        response.setHeader("HX-Trigger", "{\"showtoast\":{\"type\":\"success\",\"message\":\"Saved successfully\"}}");
         return tabContracts(model);
     }
 }

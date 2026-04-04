@@ -15,15 +15,15 @@
 
     <div class="bg-white rounded-[20px] shadow-sm border border-gray-100 overflow-visible w-full pb-4">
         <div class="overflow-x-auto w-full">
-            <table class="w-full text-left border-collapse">
+            <table class="table w-full">
                 <thead>
-                    <tr class="border-b border-gray-200">
-                        <th class="px-6 py-4 text-[11px] font-bold text-gray-400 uppercase tracking-widest bg-white rounded-tl-[20px]">Creation</th>
-                        <th class="px-6 py-4 text-[11px] font-bold text-gray-400 uppercase tracking-widest bg-white">i-Hub ID</th>
-                        <th class="px-6 py-4 text-[11px] font-bold text-gray-400 uppercase tracking-widest bg-white">Entity Name</th>
-                        <th class="px-6 py-4 text-[11px] font-bold text-gray-400 uppercase tracking-widest bg-white text-center">Registration Number</th>
-                        <th class="px-6 py-4 text-[11px] font-bold text-gray-400 uppercase tracking-widest bg-white">Country</th>
-                        <th class="w-16 bg-white rounded-tr-[20px]"></th>
+                    <tr>
+                        <th class="text-[11px] font-bold text-gray-400 uppercase tracking-widest rounded-tl-[20px]">Creation</th>
+                        <th class="text-[11px] font-bold text-gray-400 uppercase tracking-widest">i-Hub ID</th>
+                        <th class="text-[11px] font-bold text-gray-400 uppercase tracking-widest">Entity Name</th>
+                        <th class="text-[11px] font-bold text-gray-400 uppercase tracking-widest text-center">Registration Number</th>
+                        <th class="text-[11px] font-bold text-gray-400 uppercase tracking-widest">Country</th>
+                        <th class="w-16 rounded-tr-[20px]"></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -34,15 +34,15 @@
                     @else
                     @for(var entity : entities)
                     <tr hx-get="/dashboard/details/legal-entity/${entity.getId()}" hx-target="#tab-content"
-                        class="hover:bg-ihub-tealLight cursor-pointer transition-colors border-b border-gray-50 bg-white group relative">
-                        <td class="px-6 py-4 text-xs font-bold text-gray-600">28/08/2025</td>
-                        <td class="px-6 py-4 text-xs font-bold text-gray-500 tracking-wide">${entity.getId()}</td>
-                        <td class="px-6 py-4 text-xs font-bold text-gray-800 uppercase">${entity.getName()}</td>
-                        <td class="px-6 py-3 text-center text-sm font-medium text-gray-700">${entity.getRegistrationNumber()}</td>
-                        <td class="px-6 py-3 text-xs font-medium text-gray-700">${entity.getCountry()}</td>
-                        <td class="px-4 py-3 text-right sticky right-0">
-                            <button type="button" class="w-8 h-8 rounded-full bg-ihub-teal text-white flex items-center justify-center opacity-80 group-hover:opacity-100 transition-opacity">
-                                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path d="M6 10a2 2 0 11-4 0 2 2 0 014 0zM12 10a2 2 0 11-4 0 2 2 0 014 0zM16 12a2 2 0 100-4 2 2 0 000 4z" /></svg>
+                        class="hover:bg-ihub-tealLight cursor-pointer transition-colors group">
+                        <td class="text-xs font-bold text-gray-600">28/08/2025</td>
+                        <td class="text-xs font-bold text-gray-500 tracking-wide">${entity.getId()}</td>
+                        <td class="text-xs font-bold text-gray-800 uppercase">${entity.getName()}</td>
+                        <td class="text-center text-sm font-medium text-gray-700">${entity.getRegistrationNumber()}</td>
+                        <td class="text-xs font-medium text-gray-700">${entity.getCountry()}</td>
+                        <td class="text-right">
+                            <button type="button" class="btn btn-circle btn-sm bg-ihub-teal hover:bg-[#12a1b0] text-white border-0 opacity-80 group-hover:opacity-100">
+                                <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path d="M6 10a2 2 0 11-4 0 2 2 0 014 0zM12 10a2 2 0 11-4 0 2 2 0 014 0zM16 12a2 2 0 100-4 2 2 0 000 4z" /></svg>
                             </button>
                         </td>
                     </tr>
@@ -69,11 +69,11 @@
 
     <div class="fixed bottom-8 right-8 flex flex-col gap-3 z-50">
         <button hx-get="/dashboard/details/legal-entity/0" hx-target="#tab-content"
-                class="w-12 h-12 bg-ihub-teal hover:bg-[#12a1b0] rounded-full text-white shadow-lg flex items-center justify-center transition-transform hover:scale-105 active:scale-95">
-            <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"></path></svg>
+                class="btn btn-circle btn-sm bg-ihub-teal hover:bg-[#12a1b0] text-white border-0 shadow-lg">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"></path></svg>
         </button>
-        <button class="w-14 h-14 bg-ihub-teal hover:bg-[#12a1b0] rounded-full text-white shadow-lg flex items-center justify-center transition-transform hover:scale-105 active:scale-95">
-            <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 20 20"><path d="M6 10a2 2 0 11-4 0 2 2 0 014 0zM12 10a2 2 0 11-4 0 2 2 0 014 0zM16 12a2 2 0 100-4 2 2 0 000 4z" /></svg>
+        <button class="btn btn-circle bg-ihub-teal hover:bg-[#12a1b0] text-white border-0 shadow-lg w-14 h-14">
+            <svg class="w-7 h-7" fill="currentColor" viewBox="0 0 20 20"><path d="M6 10a2 2 0 11-4 0 2 2 0 014 0zM12 10a2 2 0 11-4 0 2 2 0 014 0zM16 12a2 2 0 100-4 2 2 0 000 4z" /></svg>
         </button>
     </div>
 </div>

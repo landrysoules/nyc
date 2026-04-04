@@ -1,7 +1,7 @@
 @param String error = null
 <div id="auth-content" class="flex flex-col items-center w-full relative pt-2 pb-6 px-4">
     <div class="absolute top-0 left-0">
-        <button type="button" @click="window.location.reload()" class="flex items-center text-sm font-bold text-gray-700 hover:text-black">
+        <button type="button" @click="window.location.reload()" class="btn btn-ghost btn-sm gap-1">
             <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"></path></svg>
             Back
         </button>
@@ -26,17 +26,17 @@
         <div x-data="otpForm()" class="flex flex-col items-center w-full">
             <input type="hidden" name="otpCode" :value="combined" required pattern="\d{6}" />
             <div class="flex space-x-3 justify-center">
-                <input type="text" maxlength="1" x-ref="otp0" x-model="otp[0]" @input="handleInput(0)" @keydown="handleBackspace($event, 0)" inputmode="numeric" class="w-12 h-12 border border-gray-300 rounded-lg text-center text-xl font-bold text-gray-800 bg-white focus:outline-none focus:border-ihub-teal focus:ring-1 focus:ring-ihub-teal transition-colors" />
-                <input type="text" maxlength="1" x-ref="otp1" x-model="otp[1]" @input="handleInput(1)" @keydown="handleBackspace($event, 1)" inputmode="numeric" class="w-12 h-12 border border-gray-300 rounded-lg text-center text-xl font-bold text-gray-800 bg-white focus:outline-none focus:border-ihub-teal focus:ring-1 focus:ring-ihub-teal transition-colors" />
-                <input type="text" maxlength="1" x-ref="otp2" x-model="otp[2]" @input="handleInput(2)" @keydown="handleBackspace($event, 2)" inputmode="numeric" class="w-12 h-12 border border-gray-300 rounded-lg text-center text-xl font-bold text-gray-800 bg-white focus:outline-none focus:border-ihub-teal focus:ring-1 focus:ring-ihub-teal transition-colors" />
-                <input type="text" maxlength="1" x-ref="otp3" x-model="otp[3]" @input="handleInput(3)" @keydown="handleBackspace($event, 3)" inputmode="numeric" class="w-12 h-12 border border-gray-300 rounded-lg text-center text-xl font-bold text-gray-800 bg-white focus:outline-none focus:border-ihub-teal focus:ring-1 focus:ring-ihub-teal transition-colors" />
-                <input type="text" maxlength="1" x-ref="otp4" x-model="otp[4]" @input="handleInput(4)" @keydown="handleBackspace($event, 4)" inputmode="numeric" class="w-12 h-12 border border-gray-300 rounded-lg text-center text-xl font-bold text-gray-800 bg-white focus:outline-none focus:border-ihub-teal focus:ring-1 focus:ring-ihub-teal transition-colors" />
-                <input type="text" maxlength="1" x-ref="otp5" x-model="otp[5]" @input="handleInput(5)" @keydown="handleBackspace($event, 5)" inputmode="numeric" class="w-12 h-12 border border-gray-300 rounded-lg text-center text-xl font-bold text-gray-800 bg-white focus:outline-none focus:border-ihub-teal focus:ring-1 focus:ring-ihub-teal transition-colors" />
+                <input type="text" maxlength="1" x-ref="otp0" x-model="otp[0]" @input="handleInput(0)" @keydown="handleBackspace($event, 0)" inputmode="numeric" class="input w-12 h-12 border border-gray-300 rounded-lg text-center text-xl font-bold text-gray-800 bg-white focus:outline-none focus:border-ihub-teal focus:ring-1 focus:ring-ihub-teal transition-colors" />
+                <input type="text" maxlength="1" x-ref="otp1" x-model="otp[1]" @input="handleInput(1)" @keydown="handleBackspace($event, 1)" inputmode="numeric" class="input w-12 h-12 border border-gray-300 rounded-lg text-center text-xl font-bold text-gray-800 bg-white focus:outline-none focus:border-ihub-teal focus:ring-1 focus:ring-ihub-teal transition-colors" />
+                <input type="text" maxlength="1" x-ref="otp2" x-model="otp[2]" @input="handleInput(2)" @keydown="handleBackspace($event, 2)" inputmode="numeric" class="input w-12 h-12 border border-gray-300 rounded-lg text-center text-xl font-bold text-gray-800 bg-white focus:outline-none focus:border-ihub-teal focus:ring-1 focus:ring-ihub-teal transition-colors" />
+                <input type="text" maxlength="1" x-ref="otp3" x-model="otp[3]" @input="handleInput(3)" @keydown="handleBackspace($event, 3)" inputmode="numeric" class="input w-12 h-12 border border-gray-300 rounded-lg text-center text-xl font-bold text-gray-800 bg-white focus:outline-none focus:border-ihub-teal focus:ring-1 focus:ring-ihub-teal transition-colors" />
+                <input type="text" maxlength="1" x-ref="otp4" x-model="otp[4]" @input="handleInput(4)" @keydown="handleBackspace($event, 4)" inputmode="numeric" class="input w-12 h-12 border border-gray-300 rounded-lg text-center text-xl font-bold text-gray-800 bg-white focus:outline-none focus:border-ihub-teal focus:ring-1 focus:ring-ihub-teal transition-colors" />
+                <input type="text" maxlength="1" x-ref="otp5" x-model="otp[5]" @input="handleInput(5)" @keydown="handleBackspace($event, 5)" inputmode="numeric" class="input w-12 h-12 border border-gray-300 rounded-lg text-center text-xl font-bold text-gray-800 bg-white focus:outline-none focus:border-ihub-teal focus:ring-1 focus:ring-ihub-teal transition-colors" />
             </div>
         </div>
 
         <div class="w-full flex justify-center mt-2">
-            <button type="submit" class="py-3 px-8 rounded-full text-sm font-bold tracking-widest text-white bg-ihub-teal hover:bg-[#12a1b0] focus:outline-none focus:ring-2 focus:ring-offset-1 focus:ring-ihub-teal transition-colors uppercase flex items-center group">
+            <button type="submit" class="btn rounded-full uppercase px-8 bg-ihub-teal hover:bg-[#12a1b0] text-white border-ihub-teal hover:border-[#12a1b0] group">
                 Continue
                 <svg class="w-4 h-4 ml-1 !duration-300 group-hover:translate-x-1" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"></path></svg>
             </button>

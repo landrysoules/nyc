@@ -3,9 +3,10 @@
 @param NaturalPerson person
 @param Map<String, String> fieldErrors = null
 @param boolean hasErrors = false
+<div id="np-form-container">
 <form hx-post="/dashboard/details/natural-person" hx-target="#tab-content" id="np-form">
     <fieldset x-bind:disabled="!isEditMode" class="w-full border-none p-0 m-0">
-    <div hx-post="/dashboard/validate/natural-person" hx-trigger="keyup delay:500ms from:input, change from:select, customValidation from:body" hx-include="#np-form" hx-swap="none"></div>
+    <div hx-post="/dashboard/validate/natural-person" hx-trigger="keyup delay:500ms from:input, change from:select, customValidation from:body" hx-include="#np-form" hx-target="#np-form-container" hx-swap="morph"></div>
     <input type="hidden" name="id" value="${person.getId() != null ? person.getId().toString() : ""}"/>
 
     <h3 class="text-xl font-bold text-gray-700 mb-8 mt-2 border-b border-ihub-tealLight pb-4">Personal data</h3>
@@ -67,21 +68,15 @@
             <span id="err-dateOfBirth" class="text-xs text-red-600 block absolute -bottom-5">${fieldErrors != null ? fieldErrors.getOrDefault("dateOfBirth", "") : ""}</span>
         </div>
 
-        <div class="col-span-1 border border-gray-200 rounded px-4 py-1 relative flex items-center h-[52px]" @click.outside="handleClickOutside()">
-            <label class="absolute -top-[9px] left-3 bg-white px-1 text-[9px] text-gray-500 font-bold uppercase tracking-widest">Nationality</label>
-            <span class="absolute -top-[9px] right-3 bg-white px-1 text-[9px] text-orange-400 font-bold uppercase tracking-widest">Recommended</span>
-            <input type="text" autocomplete="off" placeholder="e.g. Portugal" x-model.fill="searchQuery" @focus="showNationalityList = true" value="${person.getNationality() != null ? person.getNationality() : ""}" class="w-full h-full bg-transparent outline-none text-sm text-gray-800 pt-1 cursor-pointer font-bold">
-            <div class="absolute right-4 text-gray-400 pointer-events-none">
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
-            </div>
-            <input type="hidden" name="nationality" x-model.fill="nationality" value="${person.getNationality() != null ? person.getNationality() : ""}">
-            <ul x-show="showNationalityList" x-cloak class="absolute top-[52px] left-0 w-full bg-white border border-gray-300 rounded-md shadow-lg max-h-40 overflow-auto z-50">
-                <template x-for="c in filteredCountries" :key="c">
-                    <li class="p-2 hover:bg-ihub-tealLight cursor-pointer text-sm font-medium text-gray-700 transition-colors" @click="selectCountry(c)" x-text="c"></li>
-                </template>
-            </ul>
-            <span id="err-nationality" class="text-xs text-red-600 block absolute -bottom-5">${fieldErrors != null ? fieldErrors.getOrDefault("nationality", "") : ""}</span>
-        </div>
+        @template.components.country_dropdown(
+            label = "Nationality",
+            fieldName = "nationality",
+            value = person.getNationality() != null ? person.getNationality() : "",
+            badge = "Recommended",
+            badgeClass = "text-orange-400",
+            errorId = "err-nationality",
+            errorMessage = fieldErrors != null ? fieldErrors.getOrDefault("nationality", "") : ""
+        )
     </div>
 
     <h3 class="text-xl font-bold text-gray-700 mb-8 mt-12 border-b border-ihub-tealLight pb-4">Residence address</h3>
@@ -99,12 +94,25 @@
             <label class="absolute -top-[9px] left-3 bg-white px-1 text-[9px] text-gray-500 font-bold uppercase tracking-widest">City</label>
             <input type="text" name="address.city" value="${person.getAddress() != null && person.getAddress().getCity() != null ? person.getAddress().getCity() : ""}" class="w-full h-full bg-transparent outline-none text-sm text-gray-800 pt-1 uppercase">
         </div>
-        <div class="col-span-1 border border-gray-200 rounded px-4 py-1 relative flex items-center h-[52px]">
-            <label class="absolute -top-[9px] left-3 bg-white px-1 text-[9px] text-gray-500 font-bold uppercase tracking-widest">Country</label>
-            <input type="text" name="address.country" value="${person.getAddress() != null && person.getAddress().getCountry() != null ? person.getAddress().getCountry() : ""}" class="w-full h-full bg-transparent outline-none text-sm text-gray-800 pt-1">
-        </div>
+        @template.components.country_dropdown(
+            label = "Country",
+            fieldName = "address.country",
+            value = person.getAddress() != null && person.getAddress().getCountry() != null ? person.getAddress().getCountry() : ""
+        )
     </div>
 
     <button type="submit" id="np-submit-btn-hidden" class="hidden">Save Hidden</button>
     </fieldset>
 </form>
+
+<div class="fixed bottom-8 right-8 flex flex-col gap-3 z-50">
+    <button type="button" @click="document.getElementById('np-submit-btn-hidden').click()" id="np-submit-btn"
+            disabled="${hasErrors}"
+            class="btn btn-circle bg-ihub-teal hover:bg-[#12a1b0] text-white border-0 shadow-lg w-14 h-14 flex flex-col disabled:bg-gray-300 disabled:cursor-not-allowed">
+        <span class="text-[10px] font-bold tracking-wider uppercase">Save</span>
+    </button>
+    <button class="btn btn-circle btn-sm bg-ihub-teal hover:bg-[#12a1b0] text-white border-0 shadow-lg ml-auto">
+        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path d="M6 10a2 2 0 11-4 0 2 2 0 014 0zM12 10a2 2 0 11-4 0 2 2 0 014 0zM16 12a2 2 0 100-4 2 2 0 000 4z" /></svg>
+    </button>
+</div>
+</div>

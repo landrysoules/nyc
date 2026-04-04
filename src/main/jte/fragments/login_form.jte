@@ -7,8 +7,8 @@
 
     <form class="w-full flex flex-col gap-6" action="/auth/login" method="POST" hx-post="/auth/login" hx-target="#auth-container" hx-swap="innerHTML">
         @if(error != null)
-        <div class="bg-red-50 text-red-500 p-3 rounded-lg text-sm font-medium border border-red-100 flex items-center w-full mb-4">
-            <svg class="w-5 h-5 mr-2 shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"></path></svg>
+        <div role="alert" class="alert alert-error mb-4 text-sm font-medium py-2">
+            <svg class="w-5 h-5 shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"></path></svg>
             <span>${error}</span>
         </div>
         @endif
@@ -37,19 +37,15 @@
         </div>
 
         <div class="w-full mt-2">
-            <button type="submit" class="w-full flex justify-center py-3.5 px-4 rounded-full text-sm font-extrabold tracking-wide text-white bg-ihub-teal hover:bg-[#12a1b0] focus:outline-none focus:ring-2 focus:ring-offset-1 focus:ring-ihub-teal transition-colors uppercase">
+            <button type="submit" class="btn w-full rounded-full uppercase text-sm font-extrabold bg-ihub-teal hover:bg-[#12a1b0] text-white border-ihub-teal hover:border-[#12a1b0]">
                 Sign in
             </button>
         </div>
 
-        <div class="relative flex items-center py-1">
-            <div class="flex-grow border-t border-gray-300"></div>
-            <span class="flex-shrink-0 mx-4 text-gray-500 text-sm">Or</span>
-            <div class="flex-grow border-t border-gray-300"></div>
-        </div>
+        <div class="divider text-gray-400 text-sm">Or</div>
 
         <div class="w-full">
-            <button type="button" class="w-full flex justify-center items-center py-4 px-4 rounded-xl border border-ihub-teal bg-cyan-50 hover:bg-cyan-100 focus:outline-none focus:ring-2 focus:ring-ihub-teal transition-colors">
+            <button type="button" class="btn btn-outline w-full rounded-xl border-ihub-teal text-gray-800 hover:bg-cyan-100 hover:border-ihub-teal hover:text-gray-800">
                 <span class="text-sm font-semibold text-gray-800 mr-2">Sign in with</span>
                 <span class="text-base font-extrabold tracking-tight">LUX<span class="text-blue-600">TRUST</span></span>
             </button>

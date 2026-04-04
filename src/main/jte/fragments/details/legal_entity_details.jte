@@ -8,7 +8,7 @@
 
     <div class="flex flex-col lg:flex-row justify-between items-start lg:items-center bg-white border border-gray-100 px-6 py-4 rounded-t-[20px] shadow-sm mb-0 z-10 relative">
         <div class="flex items-start">
-            <button hx-get="/dashboard/tab/legal-entities" hx-target="#tab-content" class="mt-1 mr-4 rounded-full border border-gray-300 w-8 h-8 flex items-center justify-center text-gray-400 hover:text-ihub-teal hover:border-ihub-teal transition-colors">
+            <button hx-get="/dashboard/tab/legal-entities" hx-target="#tab-content" class="btn btn-circle btn-ghost btn-sm mr-4 mt-1 border border-gray-300 text-gray-400 hover:text-ihub-teal hover:border-ihub-teal">
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"></path></svg>
             </button>
             <div class="w-12 h-12 rounded-full bg-gray-200 flex items-center justify-center text-gray-400 mr-4">
@@ -27,7 +27,7 @@
                 @if(entity.getId() != null)
                 <div class="flex items-center space-x-2 text-xs font-bold text-gray-500 mb-2">
                     <span>i-Hub ID <span class="font-normal ml-1">${entity.getId()}</span></span>
-                    <span class="bg-ihub-teal text-white px-2 py-0.5 rounded text-[9px] tracking-wide ml-2">SIMPLE</span>
+                    <span class="badge badge-sm bg-ihub-teal text-white border-0 ml-2">SIMPLE</span>
                 </div>
                 <div class="flex gap-6 mt-1 text-[10px] text-gray-500 uppercase tracking-wide">
                     <div><span class="font-bold">CREATED BY</span><br/>System<br/><span class="font-normal capitalize text-gray-400">On 28/08/2025</span></div>
@@ -40,9 +40,9 @@
         <div class="flex gap-8 items-center mt-4 lg:mt-0">
             @if(entity.getId() != null)
             <div class="flex gap-2">
-                <button class="bg-orange-400 text-white rounded-full px-4 py-1.5 text-[10px] font-bold uppercase hover:bg-orange-500 transition-colors shadow-sm flex items-center">Pending update</button>
-                <button class="bg-ihub-teal text-white rounded-full px-4 py-1.5 text-[10px] font-bold uppercase hover:bg-[#12a1b0] transition-colors shadow-sm flex items-center">Assign to me</button>
-                <button class="w-8 h-8 rounded-full bg-ihub-teal flex items-center justify-center text-white"><svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path d="M6 10a2 2 0 11-4 0 2 2 0 014 0zM12 10a2 2 0 11-4 0 2 2 0 014 0zM16 12a2 2 0 100-4 2 2 0 000 4z" /></svg></button>
+                <button class="btn btn-xs btn-warning uppercase">Pending update</button>
+                <button class="btn btn-xs bg-ihub-teal hover:bg-[#12a1b0] text-white border-0 uppercase">Assign to me</button>
+                <button class="btn btn-circle btn-sm bg-ihub-teal hover:bg-[#12a1b0] text-white border-0"><svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path d="M6 10a2 2 0 11-4 0 2 2 0 014 0zM12 10a2 2 0 11-4 0 2 2 0 014 0zM16 12a2 2 0 100-4 2 2 0 000 4z" /></svg></button>
             </div>
             @endif
         </div>
@@ -59,7 +59,7 @@
     <div class="w-full bg-white shadow-sm border border-gray-100 p-8 min-h-[500px]">
         <div id="view-mode" x-show="!isEditMode">
             <div class="flex justify-end mb-6">
-                <button type="button" @click="toggleEditMode()" class="px-6 py-2 rounded-full border text-ihub-teal border-ihub-teal font-bold text-xs uppercase hover:bg-cyan-50 transition-colors">Edit Data</button>
+                <button type="button" @click="toggleEditMode()" class="btn btn-outline btn-sm text-ihub-teal border-ihub-teal hover:bg-cyan-50 hover:border-ihub-teal hover:text-ihub-teal uppercase">Edit Data</button>
             </div>
 
             <h3 class="text-xl font-bold text-gray-700 mb-8 mt-2 border-b border-ihub-tealLight pb-4">Corporate data</h3>
@@ -104,14 +104,7 @@
         </div>
     </div>
 
-    <div class="fixed bottom-8 right-8 flex flex-col gap-3 z-50" x-show="isEditMode" x-transition>
-        <button type="button" @click="document.getElementById('le-submit-btn-hidden').click()" id="le-submit-btn"
-                disabled="${hasErrors}"
-                class="w-14 h-14 bg-ihub-teal hover:bg-[#12a1b0] rounded-full text-white shadow-lg flex flex-col items-center justify-center transition-transform hover:scale-105 active:scale-95 disabled:bg-gray-300 disabled:cursor-not-allowed">
-            <span class="text-[10px] font-bold tracking-wider uppercase">Save</span>
-        </button>
-    </div>
     <div class="fixed bottom-8 left-8 z-50">
-        <button type="button" hx-get="/dashboard/tab/legal-entities" hx-target="#tab-content" class="px-8 py-3 rounded-full border text-gray-600 font-bold border-gray-300 text-xs uppercase hover:bg-gray-50 transition-colors shadow-sm bg-white">Back</button>
+        <button type="button" hx-get="/dashboard/tab/legal-entities" hx-target="#tab-content" class="btn btn-outline btn-sm text-gray-600 border-gray-300 hover:bg-gray-50 hover:border-gray-400 hover:text-gray-700 uppercase shadow-sm bg-white px-8 py-3">Back</button>
     </div>
 </div>
