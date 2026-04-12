@@ -19,6 +19,9 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .csrf(AbstractHttpConfigurer::disable) // Disabled for POC with HTMX for simplicity
+                .headers(headers -> headers
+                        .frameOptions(frame -> frame.sameOrigin()) // Allow same-origin iframes for document viewer
+                )
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/auth/**", "/css/**", "/js/**", "/error").permitAll()
                         .requestMatchers("/kyc/**").authenticated()

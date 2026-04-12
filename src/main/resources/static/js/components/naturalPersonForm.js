@@ -1,6 +1,7 @@
 export default function naturalPersonForm(isEditMode) {
     return {
         isEditMode: isEditMode,
+        currentTab: 'data',
         firstName: '',
         lastName: '',
         dateOfBirth: '',

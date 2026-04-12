@@ -5,7 +5,7 @@
 @param boolean isValid = false
 @param Map<String, String> fieldErrors = null
 @param boolean hasErrors = false
-<div class="bg-ihub-bg fade-in w-full relative pb-24" x-data="naturalPersonForm(${person.getId() == null})">
+<div class="bg-ihub-bg fade-in w-full relative pb-24" x-data="naturalPersonForm(${person.getId() == null})" @np-tab-switch.window="currentTab = $event.detail.tab">
 
     <div class="flex flex-col lg:flex-row justify-between items-start lg:items-center bg-white border border-gray-100 px-6 py-4 rounded-t-[20px] shadow-sm mb-0 z-10 relative">
         <div class="flex items-start">
@@ -66,8 +66,20 @@
 
     <div class="bg-ihub-tealDark px-4 flex justify-between rounded-bl-lg items-end pt-3">
         <div class="flex gap-1 overflow-x-auto hide-scrollbar">
-            <button class="bg-white text-ihub-teal rounded-t-lg px-6 py-2.5 text-xs font-medium tracking-wide border-0 focus:outline-none">Data</button>
-            <button class="text-white/80 hover:text-white px-5 py-2.5 text-xs font-medium tracking-wide">Documents</button>
+            <button @click="currentTab = 'data'"
+                    :class="currentTab === 'data' ? 'bg-white text-ihub-teal' : 'text-white/80 hover:text-white'"
+                    class="rounded-t-lg px-6 py-2.5 text-xs font-medium tracking-wide border-0 focus:outline-none transition-colors">Data</button>
+            @if(person.getId() != null)
+            <button @click="currentTab = 'documents'"
+                    hx-get="/dashboard/details/natural-person/${person.getId()}/documents"
+                    hx-target="#np-documents-content"
+                    hx-swap="innerHTML"
+                    hx-trigger="click[currentTab !== 'documents']"
+                    :class="currentTab === 'documents' ? 'bg-white text-ihub-teal' : 'text-white/80 hover:text-white'"
+                    class="rounded-t-lg px-5 py-2.5 text-xs font-medium tracking-wide transition-colors">Documents</button>
+            @else
+            <button class="text-white/40 px-5 py-2.5 text-xs font-medium tracking-wide cursor-not-allowed" disabled>Documents</button>
+            @endif
             <button class="text-white/80 hover:text-white px-5 py-2.5 text-xs font-medium tracking-wide flex items-center gap-2">Related parties <span class="bg-white/20 text-white rounded-full px-1.5 py-0.5 text-[10px]">0</span></button>
             <button class="text-white/80 hover:text-white px-5 py-2.5 text-xs font-medium tracking-wide flex items-center gap-2">Roles <span class="bg-white/20 text-white rounded-full px-1.5 py-0.5 text-[10px]">0</span></button>
             <button class="text-white/80 hover:text-white px-5 py-2.5 text-xs font-medium tracking-wide">Relationships</button>
@@ -79,7 +91,8 @@
         <button class="bg-white text-gray-700 rounded-t-lg px-5 py-2.5 text-xs font-medium tracking-wide">Audit trail</button>
     </div>
 
-    <div class="w-full bg-white shadow-sm border border-gray-100 p-8 min-h-[500px]">
+    <div id="np-tab-content" class="w-full bg-white shadow-sm border border-gray-100 min-h-[500px]">
+        <div class="p-8" x-show="currentTab === 'data'">
         <div id="view-mode" x-show="!isEditMode">
             <div class="flex justify-end mb-6">
                 <button type="button" @click="toggleEditMode()" class="px-6 py-2 rounded-full border text-ihub-teal border-ihub-teal font-bold text-xs uppercase hover:bg-cyan-50 transition-colors">
@@ -154,6 +167,10 @@
 
         <div id="edit-mode" x-show="isEditMode">
             @template.fragments.details.natural_person_details_form(person = person, fieldErrors = fieldErrors, hasErrors = hasErrors)
+        </div>
+        </div>
+        <div id="np-documents-content" x-show="currentTab === 'documents'" style="display:none">
+            <!-- Loaded on first click via HTMX -->
         </div>
     </div>
 

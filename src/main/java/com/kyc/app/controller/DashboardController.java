@@ -1,20 +1,28 @@
 package com.kyc.app.controller;
 
 import com.kyc.app.model.Contract;
+import com.kyc.app.model.DocumentType;
 import com.kyc.app.model.LegalEntity;
 import com.kyc.app.model.NaturalPerson;
+import com.kyc.app.model.PersonDocumentVersion;
 import com.kyc.app.security.CustomUserDetails;
 import com.kyc.app.service.ContractService;
 import com.kyc.app.service.LegalEntityService;
 import com.kyc.app.service.NaturalPersonService;
+import com.kyc.app.service.PersonDocumentService;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -24,15 +32,18 @@ public class DashboardController {
     private final NaturalPersonService naturalPersonService;
     private final LegalEntityService legalEntityService;
     private final ContractService contractService;
+    private final PersonDocumentService personDocumentService;
     private final jakarta.validation.Validator validator;
 
     public DashboardController(NaturalPersonService naturalPersonService,
                                LegalEntityService legalEntityService,
                                ContractService contractService,
+                               PersonDocumentService personDocumentService,
                                jakarta.validation.Validator validator) {
         this.naturalPersonService = naturalPersonService;
         this.legalEntityService = legalEntityService;
         this.contractService = contractService;
+        this.personDocumentService = personDocumentService;
         this.validator = validator;
     }
 
@@ -101,6 +112,69 @@ public class DashboardController {
         naturalPersonService.save(person);
         HxTrigger.toast(response, HxTrigger.Toast.success, "Saved successfully");
         return tabNaturalPersons(model);
+    }
+
+    // --- Natural Person Documents ---
+
+    @GetMapping("/dashboard/details/natural-person/{id}/documents")
+    public String naturalPersonDocuments(@PathVariable("id") Long id, Model model) {
+        model.addAttribute("personId", id);
+        model.addAttribute("providedDocuments", personDocumentService.findProvidedDocuments(id));
+        model.addAttribute("missingDocuments", personDocumentService.findMissingDocuments(id));
+        model.addAttribute("availableTypes", personDocumentService.getAvailableTypesToRequire(id));
+        return "fragments/details/natural_person_documents";
+    }
+
+    @PostMapping("/dashboard/details/natural-person/{id}/require-document")
+    public String requireDocument(@PathVariable("id") Long id,
+                                  @RequestParam("documentType") DocumentType documentType,
+                                  @RequestParam(value = "note", required = false) String note,
+                                  @AuthenticationPrincipal CustomUserDetails userDetails,
+                                  Model model) {
+        String username = userDetails != null ? userDetails.getUsername() : "system";
+        try {
+            personDocumentService.requireDocument(id, documentType, note, username);
+        } catch (IllegalStateException ignored) {
+            // Already required — silently ignore duplicate
+        }
+        return naturalPersonDocuments(id, model);
+    }
+
+    @PostMapping("/dashboard/details/natural-person/{id}/document/{docId}/upload")
+    public String uploadDocumentVersion(@PathVariable("id") Long id,
+                                        @PathVariable("docId") Long docId,
+                                        @RequestParam("file") MultipartFile file,
+                                        @AuthenticationPrincipal CustomUserDetails userDetails,
+                                        Model model,
+                                        HttpServletResponse response) {
+        if (file.isEmpty()) {
+            HxTrigger.toast(response, HxTrigger.Toast.error, "Please select a file to upload");
+            return naturalPersonDocuments(id, model);
+        }
+        String username = userDetails != null ? userDetails.getUsername() : "system";
+        try {
+            personDocumentService.uploadVersion(docId, file, username);
+            HxTrigger.toast(response, HxTrigger.Toast.success, "Document uploaded successfully");
+        } catch (IOException e) {
+            HxTrigger.toast(response, HxTrigger.Toast.error, "Upload failed: " + e.getMessage());
+        }
+        return naturalPersonDocuments(id, model);
+    }
+
+    @GetMapping("/dashboard/details/natural-person/{id}/document/{docId}/version/{versionId}/view")
+    public ResponseEntity<byte[]> viewDocumentVersion(@PathVariable("id") Long id,
+                                                      @PathVariable("docId") Long docId,
+                                                      @PathVariable("versionId") Long versionId) {
+        return personDocumentService.findVersion(versionId)
+                .filter(v -> v.getDocument().getId().equals(docId))
+                .map(v -> {
+                    String ct = v.getContentType() != null ? v.getContentType() : MediaType.APPLICATION_OCTET_STREAM_VALUE;
+                    return ResponseEntity.ok()
+                            .header(HttpHeaders.CONTENT_TYPE, ct)
+                            .header(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=\"" + v.getFileName() + "\"")
+                            .body(v.getFileData());
+                })
+                .orElse(ResponseEntity.notFound().build());
     }
 
     @GetMapping("/dashboard/details/legal-entity/{id}")
