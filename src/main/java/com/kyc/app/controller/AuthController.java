@@ -12,6 +12,7 @@ import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.context.SecurityContextRepository;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -30,7 +31,10 @@ public class AuthController {
     private final CodeVerifier codeVerifier;
     private final SecurityContextRepository securityContextRepository;
 
-    public AuthController(AppUserRepository userRepository, PasswordEncoder passwordEncoder, 
+    @Value("${app.totp.enabled:true}")
+    private boolean totpEnabled;
+
+    public AuthController(AppUserRepository userRepository, PasswordEncoder passwordEncoder,
                           CodeVerifier codeVerifier, SecurityContextRepository securityContextRepository) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
@@ -72,7 +76,7 @@ public class AuthController {
         AppUser user = userRepository.findByUsername(username).orElse(null);
 
         if (user != null) {
-            if (codeVerifier.isValidCode(user.getTotpSecret(), otpCode)) {
+            if (!totpEnabled || codeVerifier.isValidCode(user.getTotpSecret(), otpCode)) {
                 // OTP valid! Authenticate user in Spring Security
                 CustomUserDetails userDetails = new CustomUserDetails(user);
                 UsernamePasswordAuthenticationToken authentication = 
