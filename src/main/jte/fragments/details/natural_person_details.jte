@@ -1,4 +1,5 @@
 @import com.kyc.app.model.NaturalPerson
+@import com.kyc.app.model.Gender
 @import java.util.Map
 @param NaturalPerson person
 @param boolean isValid = false
@@ -89,6 +90,14 @@
             <h3 class="text-xl font-bold text-gray-700 mb-8 mt-2 border-b border-ihub-tealLight pb-4">Personal data</h3>
             <div class="grid grid-cols-3 gap-x-8 gap-y-8 mb-12">
                 <div>
+                    <span class="text-[10px] text-gray-400 font-bold uppercase tracking-widest block mb-1">Gender</span>
+                    @if(person.getGender() != null)
+                    <span class="text-sm font-bold text-gray-800">${person.getGender().name().substring(0, 1) + person.getGender().name().substring(1).toLowerCase()}</span>
+                    @else
+                    <span class="text-sm font-bold text-gray-800">---</span>
+                    @endif
+                </div>
+                <div>
                     <span class="text-[10px] text-gray-400 font-bold uppercase tracking-widest block mb-1">Last Name</span>
                     <span class="text-sm font-bold text-gray-800">${person.getLastName() != null ? person.getLastName() : "---"}</span>
                 </div>
@@ -103,6 +112,22 @@
                 <div>
                     <span class="text-[10px] text-gray-400 font-bold uppercase tracking-widest block mb-1">Nationality</span>
                     <span class="text-sm font-bold text-gray-800">${person.getNationality() != null ? person.getNationality() : "---"}</span>
+                </div>
+                <div>
+                    <span class="text-[10px] text-gray-400 font-bold uppercase tracking-widest block mb-1">Tax ID (TIN / NIF)</span>
+                    <span class="text-sm font-bold text-gray-800 font-mono">${person.getTaxIdentificationNumber() != null ? person.getTaxIdentificationNumber() : "---"}</span>
+                </div>
+            </div>
+
+            <h3 class="text-xl font-bold text-gray-700 mb-8 border-b border-ihub-tealLight pb-4">Birth details</h3>
+            <div class="grid grid-cols-3 gap-x-8 gap-y-8 mb-12">
+                <div>
+                    <span class="text-[10px] text-gray-400 font-bold uppercase tracking-widest block mb-1">Place of Birth</span>
+                    <span class="text-sm font-bold text-gray-800">${person.getPlaceOfBirth() != null ? person.getPlaceOfBirth() : "---"}</span>
+                </div>
+                <div>
+                    <span class="text-[10px] text-gray-400 font-bold uppercase tracking-widest block mb-1">Country of Birth</span>
+                    <span class="text-sm font-bold text-gray-800">${person.getCountryOfBirth() != null ? person.getCountryOfBirth() : "---"}</span>
                 </div>
             </div>
 

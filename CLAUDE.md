@@ -6,6 +6,18 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 **nyc** ("Now Your Customer") is a KYC (Know Your Customer) backoffice application built with Spring Boot 4.0.5, JTE templating, HTMX, and PostgreSQL. It manages customer data (natural persons, legal entities, contracts), validates KYC documents, and enforces two-factor authentication (TOTP).
 
+## Mandatory Workflow
+
+Before any development, always present a structured plan in your response with:
+- Numbered steps
+- Impacted files
+- A complexity estimate
+
+Wait for my confirmation before starting.
+
+## Code conventions
+
+- All code commentsand documentation should be written in english.
 ## Commands
 
 ### Prerequisites
@@ -60,7 +72,7 @@ CSRF is disabled (intentional for HTMX POC, noted in `SecurityConfig`).
 - `StrictBankKycValidator` — stricter rules for bank-specific cases
 
 ### Database
-PostgreSQL on `localhost:5432/kyc_db` (user: `kycuser`, password: `kycpassword`). Hibernate manages schema with `ddl-auto: update`. SQL is logged to console (`show-sql: true`).
+PostgreSQL on `localhost:5432/kyc_db` (user: `kycuser`, password: `kycpassword`). Hibernate manages schema with `ddl-auto: update`.
 
 ### Frontend
 Static JS lives in `src/main/resources/static/js/`. Files are per-entity (`naturalPersonForm.js`, `contractForm.js`, etc.) and coordinate HTMX interactions. No build step — plain JS served directly.

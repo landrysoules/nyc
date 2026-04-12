@@ -8,6 +8,9 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 @Entity
 @Table(name = "natural_persons")
@@ -28,9 +31,27 @@ public class NaturalPerson {
     
     @NotBlank(message = "Nationality is mandatory")
     private String nationality;
-    
+
     @NotNull(message = "Date of Birth is mandatory")
     private LocalDate dateOfBirth;
+
+    @Enumerated(EnumType.STRING)
+    private Gender gender;
+
+    // ── Birth details ─────────────────────────────────────────────────────────
+    private String placeOfBirth;
+
+    private String countryOfBirth;
+
+    // ── Identity documents ────────────────────────────────────────────────────
+    private String taxIdentificationNumber;
+
+    // ── Audit ─────────────────────────────────────────────────────────────────
+    @CreationTimestamp
+    private LocalDateTime createdAt;
+
+    @UpdateTimestamp
+    private LocalDateTime updatedAt;
 
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Address address = new Address();
