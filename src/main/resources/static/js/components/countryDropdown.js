@@ -5,19 +5,30 @@ export default function countryDropdown(initialValue) {
         value: initialValue || '',
         searchQuery: initialValue || '',
         showList: false,
+        filteredCountries: [],
 
-        get filteredCountries() {
-            if (this.searchQuery === '') return countriesList;
-            return countriesList.filter(c => c.toLowerCase().includes(this.searchQuery.toLowerCase()));
+        init() {
+            this.filteredCountries = [...countriesList];
+            this.$watch('searchQuery', (val) => {
+                this.filteredCountries = val.trim()
+                    ? countriesList.filter(c => c.toLowerCase().includes(val.toLowerCase()))
+                    : [...countriesList];
+            });
+        },
+
+        openList() {
+            const val = this.searchQuery.trim();
+            this.filteredCountries = val
+                ? countriesList.filter(c => c.toLowerCase().includes(val.toLowerCase()))
+                : [...countriesList];
+            this.showList = true;
         },
 
         selectCountry(country) {
             this.searchQuery = country;
             this.value = country;
             this.showList = false;
-            this.$nextTick(() => {
-                document.body.dispatchEvent(new Event('customValidation'));
-            });
+            document.body.dispatchEvent(new Event('customValidation'));
         },
 
         handleClickOutside() {
@@ -25,12 +36,23 @@ export default function countryDropdown(initialValue) {
             if (!countriesList.includes(this.searchQuery)) {
                 this.searchQuery = '';
                 this.value = '';
+                this.filteredCountries = [...countriesList];
             } else {
                 this.value = this.searchQuery;
             }
-            this.$nextTick(() => {
-                document.body.dispatchEvent(new Event('customValidation'));
-            });
+            document.body.dispatchEvent(new Event('customValidation'));
+        },
+        renderList() {
+            return this.filteredCountries
+                .map(c => `<li class="p-2 hover:bg-ihub-tealLight cursor-pointer text-sm font-medium text-gray-700 transition-colors">${c}</li>`)
+                .join('');
+        },
+
+        handleListClick(event) {
+            const country = event.target.closest('li')?.textContent?.trim();
+            if (country && countriesList.includes(country)) {
+                this.selectCountry(country);
+            }
         },
     };
 }

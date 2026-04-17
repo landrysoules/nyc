@@ -93,8 +93,8 @@ public class DataLoader implements CommandLineRunner {
             Address addressOrg2 = new Address("15", "Rue de Londres", null, null, "75009", "Paris", "France");
             
             legalEntityRepository.saveAll(List.of(
-                new LegalEntity("Tech Corp SAS", "France", "123456789", addressOrg1),
-                new LegalEntity("Finance Innovate SA", "France", "987654321", addressOrg2)
+                new LegalEntity("France", "Tech Corp SAS", "France", "123456789", addressOrg1),
+                new LegalEntity("Italie", "Finance Innovate SA", "France", "987654321", addressOrg2)
             ));
         }
 

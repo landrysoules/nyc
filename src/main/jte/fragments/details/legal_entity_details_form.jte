@@ -12,6 +12,15 @@
     <h3 class="text-xl font-bold text-gray-700 mb-8 mt-2 border-b border-ihub-tealLight pb-4">Corporate data</h3>
 
     <div class="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-6">
+        @template.components.country_dropdown(
+        label = "Jurisdictioon",
+        fieldName = "jurisdiction",
+        value = entity.getJurisdiction() != null ? entity.getJurisdiction() : "",
+        badge = "Mandatory",
+        badgeClass = "text-ihub-red",
+        errorId = "err-le-jurisdiction",
+        errorMessage = fieldErrors != null ? fieldErrors.getOrDefault("jurisdiction", "") : ""
+        )
         <div class="col-span-1 md:col-span-2 border border-gray-200 rounded px-4 py-1 relative flex items-center h-[52px]">
             <label class="absolute -top-[9px] left-3 bg-white px-1 text-[9px] text-gray-500 font-bold uppercase tracking-widest">Company Name</label>
             <span class="absolute -top-[9px] right-3 bg-white px-1 text-[9px] text-ihub-red font-bold uppercase tracking-widest">Mandatory</span>

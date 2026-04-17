@@ -17,6 +17,9 @@ public class LegalEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotBlank(message = "Jurisdiction is mandatory")
+    private String jurisdiction;
+
     @NotBlank(message = "Name is mandatory")
     private String name;
     
@@ -29,7 +32,8 @@ public class LegalEntity {
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Address address = new Address();
 
-    public LegalEntity(String name, String country, String registrationNumber, Address address) {
+    public LegalEntity(String jurisdiction, String name, String country, String registrationNumber, Address address) {
+        this.jurisdiction = jurisdiction;
         this.name = name;
         this.country = country;
         this.registrationNumber = registrationNumber;
