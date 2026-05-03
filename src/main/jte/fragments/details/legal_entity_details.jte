@@ -4,6 +4,7 @@
 @param boolean isValid = false
 @param Map<String, String> fieldErrors = null
 @param boolean hasErrors = false
+@param Map<String, String> countries = null
 <div class="bg-ihub-bg fade-in w-full relative pb-24" x-data="legalEntityForm(${entity.getId() == null})">
 
     <div class="flex flex-col lg:flex-row justify-between items-start lg:items-center bg-white border border-gray-100 px-6 py-4 rounded-t-[20px] shadow-sm mb-0 z-10 relative">
@@ -100,7 +101,7 @@
         </div>
 
         <div id="edit-mode" x-show="isEditMode">
-            @template.fragments.details.legal_entity_details_form(entity = entity, fieldErrors = fieldErrors, hasErrors = hasErrors)
+            @template.fragments.details.legal_entity_details_form(entity = entity, fieldErrors = fieldErrors, hasErrors = hasErrors, countries = countries)
         </div>
     </div>
 

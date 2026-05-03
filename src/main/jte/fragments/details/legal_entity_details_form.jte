@@ -3,6 +3,7 @@
 @param LegalEntity entity
 @param Map<String, String> fieldErrors = null
 @param boolean hasErrors = false
+@param Map<String, String> countries = null
 <div id="le-form-container">
 <form hx-post="/dashboard/details/legal-entity" hx-target="#tab-content" id="le-form">
     <fieldset x-bind:disabled="!isEditMode" class="w-full border-none p-0 m-0">
@@ -12,14 +13,15 @@
     <h3 class="text-xl font-bold text-gray-700 mb-8 mt-2 border-b border-ihub-tealLight pb-4">Corporate data</h3>
 
     <div class="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-6">
-        @template.components.country_dropdown(
-        label = "Jurisdictioon",
-        fieldName = "jurisdiction",
-        value = entity.getJurisdiction() != null ? entity.getJurisdiction() : "",
-        badge = "Mandatory",
-        badgeClass = "text-ihub-red",
-        errorId = "err-le-jurisdiction",
-        errorMessage = fieldErrors != null ? fieldErrors.getOrDefault("jurisdiction", "") : ""
+        @template.components.country_combobox(
+            name = "jurisdiction",
+            label = "Jurisdiction",
+            countries = countries,
+            initialCode = entity.getJurisdiction() != null ? entity.getJurisdiction() : "",
+            badge = "Mandatory",
+            badgeClass = "text-ihub-red",
+            errorId = "err-le-jurisdiction",
+            errorMessage = fieldErrors != null ? fieldErrors.getOrDefault("jurisdiction", "") : ""
         )
         <div class="col-span-1 md:col-span-2 border border-gray-200 rounded px-4 py-1 relative flex items-center h-[52px]">
             <label class="absolute -top-[9px] left-3 bg-white px-1 text-[9px] text-gray-500 font-bold uppercase tracking-widest">Company Name</label>
@@ -35,10 +37,11 @@
             <span id="err-le-registrationNumber" class="text-xs text-red-600 block absolute -bottom-5">${fieldErrors != null ? fieldErrors.getOrDefault("registrationNumber", "") : ""}</span>
         </div>
 
-        @template.components.country_dropdown(
+        @template.components.country_combobox(
+            name = "country",
             label = "Country of Registration",
-            fieldName = "country",
-            value = entity.getCountry() != null ? entity.getCountry() : "",
+            countries = countries,
+            initialCode = entity.getCountry() != null ? entity.getCountry() : "",
             badge = "Mandatory",
             badgeClass = "text-ihub-red",
             errorId = "err-le-country",
@@ -61,10 +64,11 @@
             <label class="absolute -top-[9px] left-3 bg-white px-1 text-[9px] text-gray-500 font-bold uppercase tracking-widest">City</label>
             <input type="text" name="address.city" value="${entity.getAddress() != null && entity.getAddress().getCity() != null ? entity.getAddress().getCity() : ""}" class="w-full h-full bg-transparent outline-none text-sm text-gray-800 pt-1 uppercase">
         </div>
-        @template.components.country_dropdown(
+        @template.components.country_combobox(
+            name = "address.country",
             label = "Country",
-            fieldName = "address.country",
-            value = entity.getAddress() != null && entity.getAddress().getCountry() != null ? entity.getAddress().getCountry() : ""
+            countries = countries,
+            initialCode = entity.getAddress() != null && entity.getAddress().getCountry() != null ? entity.getAddress().getCountry() : ""
         )
     </div>
 

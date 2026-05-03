@@ -18,6 +18,7 @@ import dev.samstevens.totp.exceptions.QrGenerationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.core.annotation.Order;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import java.time.LocalDate;
@@ -25,6 +26,7 @@ import java.util.Base64;
 import java.util.List;
 
 @Component
+@Order(1)
 public class DataLoader implements CommandLineRunner {
 
     private static final Logger logger = LoggerFactory.getLogger(DataLoader.class);
@@ -79,22 +81,22 @@ public class DataLoader implements CommandLineRunner {
         }
 
         if (naturalPersonRepository.count() == 0) {
-            Address address1 = new Address("12", "Rue de la Paix", "A", "Appt 4", "75002", "Paris", "France");
-            Address address2 = new Address("45", "Avenue des Champs", null, null, "75008", "Paris", "France");
-            
+            Address address1 = new Address("12", "Rue de la Paix", "A", "Appt 4", "75002", "Paris", "FR");
+            Address address2 = new Address("45", "Avenue des Champs", null, null, "75008", "Paris", "FR");
+
             naturalPersonRepository.saveAll(List.of(
-                new NaturalPerson("Jean", "Dupont", "Française", LocalDate.of(1980, 5, 12), address1),
-                new NaturalPerson("Marie", "Martin", "Française", LocalDate.of(1992, 11, 23), address2)
+                new NaturalPerson("Jean", "Dupont", "FR", LocalDate.of(1980, 5, 12), address1),
+                new NaturalPerson("Marie", "Martin", "FR", LocalDate.of(1992, 11, 23), address2)
             ));
         }
 
         if (legalEntityRepository.count() == 0) {
-            Address addressOrg1 = new Address("1", "Boulevard Haussmann", "Tour A", "Etage 10", "75009", "Paris", "France");
-            Address addressOrg2 = new Address("15", "Rue de Londres", null, null, "75009", "Paris", "France");
-            
+            Address addressOrg1 = new Address("1", "Boulevard Haussmann", "Tour A", "Etage 10", "75009", "Paris", "FR");
+            Address addressOrg2 = new Address("15", "Rue de Londres", null, null, "75009", "Paris", "FR");
+
             legalEntityRepository.saveAll(List.of(
-                new LegalEntity("France", "Tech Corp SAS", "France", "123456789", addressOrg1),
-                new LegalEntity("Italie", "Finance Innovate SA", "France", "987654321", addressOrg2)
+                new LegalEntity("FR", "Tech Corp SAS", "FR", "123456789", addressOrg1),
+                new LegalEntity("IT", "Finance Innovate SA", "FR", "987654321", addressOrg2)
             ));
         }
 

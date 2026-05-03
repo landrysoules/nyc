@@ -104,6 +104,9 @@ CSRF is disabled (intentional for HTMX POC).
 
 Unauthenticated HTMX requests receive `HX-Redirect: /auth/login` with HTTP 200 (instead of a redirect) so HTMX handles the navigation.
 
+### UI
+Use Penguin UI components. Before importing any component in the project, adapt it to work flawlessly with JTE.
+
 ### Frontend
 
 `src/main/resources/static/js/`:

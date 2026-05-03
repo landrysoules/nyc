@@ -4,6 +4,7 @@
 @param NaturalPerson person
 @param Map<String, String> fieldErrors = null
 @param boolean hasErrors = false
+@param Map<String, String> countries = null
 <div id="np-form-container">
 <form hx-post="/dashboard/details/natural-person" hx-target="#tab-content" id="np-form">
     <fieldset x-bind:disabled="!isEditMode" class="w-full border-none p-0 m-0">
@@ -84,10 +85,11 @@
             <span id="err-dateOfBirth" class="text-xs text-red-600 block absolute -bottom-5">${fieldErrors != null ? fieldErrors.getOrDefault("dateOfBirth", "") : ""}</span>
         </div>
 
-        @template.components.country_dropdown(
+        @template.components.country_combobox(
+            name = "nationality",
             label = "Nationality",
-            fieldName = "nationality",
-            value = person.getNationality() != null ? person.getNationality() : "",
+            countries = countries,
+            initialCode = person.getNationality() != null ? person.getNationality() : "",
             badge = "Recommended",
             badgeClass = "text-orange-400",
             errorId = "err-nationality",
@@ -112,10 +114,11 @@
             <span id="err-placeOfBirth" class="text-xs text-red-600 block absolute -bottom-5">${fieldErrors != null ? fieldErrors.getOrDefault("placeOfBirth", "") : ""}</span>
         </div>
 
-        @template.components.country_dropdown(
+        @template.components.country_combobox(
+            name = "countryOfBirth",
             label = "Country of Birth",
-            fieldName = "countryOfBirth",
-            value = person.getCountryOfBirth() != null ? person.getCountryOfBirth() : "",
+            countries = countries,
+            initialCode = person.getCountryOfBirth() != null ? person.getCountryOfBirth() : "",
             badge = "Recommended",
             badgeClass = "text-orange-400",
             errorId = "err-countryOfBirth",
@@ -139,10 +142,11 @@
             <label class="absolute -top-[9px] left-3 bg-white px-1 text-[9px] text-gray-500 font-bold uppercase tracking-widest">City</label>
             <input type="text" name="address.city" value="${person.getAddress() != null && person.getAddress().getCity() != null ? person.getAddress().getCity() : ""}" class="w-full h-full bg-transparent outline-none text-sm text-gray-800 pt-1 uppercase">
         </div>
-        @template.components.country_dropdown(
+        @template.components.country_combobox(
+            name = "address.country",
             label = "Country",
-            fieldName = "address.country",
-            value = person.getAddress() != null && person.getAddress().getCountry() != null ? person.getAddress().getCountry() : ""
+            countries = countries,
+            initialCode = person.getAddress() != null && person.getAddress().getCountry() != null ? person.getAddress().getCountry() : ""
         )
     </div>
 

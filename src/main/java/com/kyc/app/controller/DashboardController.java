@@ -10,6 +10,7 @@ import com.kyc.app.service.ContractService;
 import com.kyc.app.service.LegalEntityService;
 import com.kyc.app.service.NaturalPersonService;
 import com.kyc.app.service.PersonDocumentService;
+import com.kyc.app.service.ReferenceDataService;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -33,17 +34,20 @@ public class DashboardController {
     private final LegalEntityService legalEntityService;
     private final ContractService contractService;
     private final PersonDocumentService personDocumentService;
+    private final ReferenceDataService referenceDataService;
     private final jakarta.validation.Validator validator;
 
     public DashboardController(NaturalPersonService naturalPersonService,
                                LegalEntityService legalEntityService,
                                ContractService contractService,
                                PersonDocumentService personDocumentService,
+                               ReferenceDataService referenceDataService,
                                jakarta.validation.Validator validator) {
         this.naturalPersonService = naturalPersonService;
         this.legalEntityService = legalEntityService;
         this.contractService = contractService;
         this.personDocumentService = personDocumentService;
+        this.referenceDataService = referenceDataService;
         this.validator = validator;
     }
 
@@ -88,6 +92,7 @@ public class DashboardController {
         NaturalPerson person = id > 0 ? naturalPersonService.findById(id).orElse(new NaturalPerson()) : new NaturalPerson();
         model.addAttribute("person", person);
         model.addAttribute("isValid", validator.validate(person).isEmpty());
+        model.addAttribute("countries", referenceDataService.getCountries());
         return "fragments/details/natural_person_details";
     }
 
@@ -96,6 +101,7 @@ public class DashboardController {
         model.addAttribute("person", person);
         model.addAttribute("fieldErrors", buildFieldErrors(result));
         model.addAttribute("hasErrors", result.hasErrors());
+        model.addAttribute("countries", referenceDataService.getCountries());
         return "fragments/details/natural_person_details_form";
     }
 
@@ -107,6 +113,7 @@ public class DashboardController {
             model.addAttribute("person", person);
             model.addAttribute("fieldErrors", buildFieldErrors(result));
             model.addAttribute("hasErrors", true);
+            model.addAttribute("countries", referenceDataService.getCountries());
             return "fragments/details/natural_person_details_form";
         }
         naturalPersonService.save(person);
@@ -182,6 +189,7 @@ public class DashboardController {
         LegalEntity entity = id > 0 ? legalEntityService.findById(id).orElse(new LegalEntity()) : new LegalEntity();
         model.addAttribute("entity", entity);
         model.addAttribute("isValid", validator.validate(entity).isEmpty());
+        model.addAttribute("countries", referenceDataService.getCountries());
         return "fragments/details/legal_entity_details";
     }
 
@@ -190,6 +198,7 @@ public class DashboardController {
         model.addAttribute("entity", entity);
         model.addAttribute("fieldErrors", buildFieldErrors(result));
         model.addAttribute("hasErrors", result.hasErrors());
+        model.addAttribute("countries", referenceDataService.getCountries());
         return "fragments/details/legal_entity_details_form";
     }
 
@@ -201,6 +210,7 @@ public class DashboardController {
             model.addAttribute("entity", entity);
             model.addAttribute("fieldErrors", buildFieldErrors(result));
             model.addAttribute("hasErrors", true);
+            model.addAttribute("countries", referenceDataService.getCountries());
             return "fragments/details/legal_entity_details_form";
         }
         legalEntityService.save(entity);
